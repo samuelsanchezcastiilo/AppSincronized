@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+    <TextView
+        android:id="@+id/tex_header_new_galpon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/text_new_galpon"
+        android:textColor="@color/primary_dark"/>
+    <TextView
+        android:id="@+id/divider_text_new_lote"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tex_header_new_galpon"
+        android:layout_margin="10dp"
+        android:background="@color/divider"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider_text_new_lote"
+        android:id="@+id/description"
+        android:layout_centerHorizontal="true"
+        android:text="Seleccione un lote y escriba el nombre del galpon"/>
+    <LinearLayout
+        android:id="@+id/content_datacorral"
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/code_lotes"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:entries="@array/array_lotes"
+            android:layout_height="wrap_content"
+            />
+
+        <EditText
+            android:id="@+id/text_value_galpon"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Nombre"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+
+
+    <Button
+        android:id="@+id/new_galpon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/content_datacorral"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:theme="@style/Theme.AppCompat.Light"
+        android:background="@color/accent"
+        android:textColor="@color/primary_text"
+        android:text="@string/save"/>
+
+</RelativeLayout>

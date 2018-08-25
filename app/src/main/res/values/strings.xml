@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">PoultryApp</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logout">Cerrar sesion</string>
+    <string name="nav_about">Acerca de</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="sincronize">Sincronizar</string>
+    <string name="code_text">Codigo: </string>
+    <string name="create_lote">Creado el</string>
+    <string name="date_text">09/08/2018</string>
+    <string name="lote_text">Lote</string>
+    <string name="text_code_galpon">Codigo Galpon</string>
+    <string name="text_desc_galpones">Codigo Galpon</string>
+    <string name="text_new_lote">Registre un nuevo lote</string>
+    <string name="action_text_new_lote">Codigo</string>
+    <string name="save">Guardar</string>
+    <string name="text_new_corrar">Registre un nuevo corral </string>
+    <string name="text_new_galpon">Registre un nuevo galpon </string>
+
+    <string name="account_type">com.apps.poultryapp.account</string>
+    <string name="provider_authority">com.apps.poultryapp</string>
+    <string name="text_desc_corrals">Codigo Corral</string>
+
+
+    <string-array name="array_galpones">
+        <item>galpon</item>
+    </string-array>
+
+
+    <string-array name="array_lotes">
+        <item>Lotes</item>
+    </string-array>
+</resources>

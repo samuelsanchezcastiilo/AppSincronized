@@ -1,0 +1,254 @@
+package com.apps.poultryapp.Login.Provider;
+
+import android.content.UriMatcher;
+import android.net.Uri;
+import android.provider.BaseColumns;
+
+public class ContratosData {
+
+    interface ColumnasBatches{
+        String ID = "id";
+        String NAME = "name";
+        String COMPANY = "company";
+        String FINALIZED = "finalized";
+        String CREATE = "created_at";
+        String UPDATE = "updated_at";
+
+        String ESTADO = "estado";
+        String ID_REMOTA = "idRemota";
+        String PENDIENTE_INSERCION = "pendiente_insercion";
+
+    }
+    interface ColumnasWarehouse{
+        String ID = "id";
+        String NAME = "name";
+        String BATCH = "batch";
+        String COMPANY = "company";
+        String CREATE = "created_at";
+        String UPDATE = "updated_at";
+
+        String ESTADO = "estado";
+        String ID_REMOTA = "idRemota";
+        String PENDIENTE_INSERCION = "pendiente_insercion";
+    }
+
+    interface ColumnasWeighings{
+        String ID = "id";
+        String NAME = "name";
+        String BRIDS = "batch";
+        String AGE = "AGE";
+        String CREATE = "created_at";
+        String UPDATE = "updated_at";
+
+        String ESTADO = "estado";
+        String ID_REMOTA = "idRemota";
+        String PENDIENTE_INSERCION = "pendiente_insercion";
+    }
+
+
+    interface  ColumnasCorrals{
+
+        String ID = "id";
+        String NAME = "name";
+        String WAREHOUSE = "warehouse";
+        String AGE = "AGE";
+        String CREATE = "created_at";
+        String UPDATE = "updated_at";
+
+        String ESTADO = "estado";
+        String ID_REMOTA = "idRemota";
+        String PENDIENTE_INSERCION = "pendiente_insercion";
+    }
+
+
+
+
+    /**
+     * Autoridad del Content Provider
+     */
+    public final static String AUTHORITY
+            = "com.apps.poultryapp";
+
+    public static final Uri URI_BASE = Uri.parse("content://" + AUTHORITY);
+
+
+    public static final String RUTA_BATCHES = "batches";
+    public static final String RUTA_CORRALS = "corrals";
+    public static final String RUTA_WAREHOUSE = "warehouse";
+    public static final String RUTA_WEIGHINGS = "weighings";
+
+    public final static Uri CONTENT_URI =
+            Uri.parse("content://" + AUTHORITY + "/" + RUTA_BATCHES);
+
+    public final static Uri CONTENT_URI_WAREHOUSE =
+            Uri.parse("content://" + AUTHORITY + "/" + RUTA_WAREHOUSE);
+
+
+
+
+    public static final String BASE_CONTENIDOS = "batches.";
+
+    public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
+            + BASE_CONTENIDOS;
+
+    public static final String TIPO_CONTENIDO_ITEM = "vnd.android.cursor.item/vnd."
+            + BASE_CONTENIDOS;
+
+    public static String generarMime(String id) {
+        if (id != null) {
+            return TIPO_CONTENIDO + id;
+        } else {
+            return null;
+        }
+    }
+
+    public static String generarMimeItem(String id) {
+        if (id != null) {
+            return TIPO_CONTENIDO_ITEM + id;
+        } else {
+            return null;
+        }
+    }
+
+
+
+
+    // Valores para la columna ESTADO
+    public static final int ESTADO_OK = 0;
+    public static final int ESTADO_SYNC = 1;
+
+
+    /**
+     * Estructura de la tabla
+     */
+    /*public static class Columnas implements BaseColumns {
+
+        private Columnas() {
+            // Sin instancias
+        }
+
+        public final static String ID = "id";
+        public final static String NAME = "name";
+        public final static String COMPANY = "company";
+        public final static String FINALIZED = "finalized";
+        public final static String CREATE = "created_at";
+        public final static String UPDATE = "updated_at";
+
+        public static final String ESTADO = "estado";
+        public static final String ID_REMOTA = "idRemota";
+        public final static String PENDIENTE_INSERCION = "pendiente_insercion";
+
+    }*/
+
+    public static class Batches implements ColumnasBatches{
+
+        public static final Uri URI_CONTENIDO =
+                URI_BASE.buildUpon().appendPath(RUTA_BATCHES).build();
+
+       /* public final static String ID = "id";
+        public final static String NAME = "name";
+        public final static String COMPANY = "company";
+        public final static String FINALIZED = "finalized";
+        public final static String CREATE = "created_at";
+        public final static String UPDATE = "updated_at";
+
+        public static final String ESTADO = "estado";
+        public static final String ID_REMOTA = "idRemota";
+        public final static String PENDIENTE_INSERCION = "pendiente_insercion";*/
+
+        public static  Uri craerUriBatches(String id){
+            return URI_CONTENIDO.buildUpon().appendPath(id).build();
+        }
+        public static  String obtnerIdBatches(Uri uri){
+            return uri.getLastPathSegment();
+        }
+
+
+
+    }
+
+    public static class Corrals implements  ColumnasCorrals{
+
+        public static final Uri URI_CONTENIDO =
+                URI_BASE.buildUpon().appendPath(RUTA_CORRALS).build();
+
+        /*public final static  String ID = "id";
+        public final static String NAME = "name";
+        public final static String WAREHOUSE = "warehouse";
+        public final static  String AGE = "AGE";
+        public final static String CREATE = "created_at";
+        public final static String UPDATE = "updated_at";
+
+        public final static String ESTADO = "estado";
+        public final static String ID_REMOTA = "idRemota";
+        public final static String PENDIENTE_INSERCION = "pendiente_insercion";*/
+
+
+        public static  String obtnerIdCorrals(Uri uri){
+            return uri.getLastPathSegment();
+        }
+        public static  Uri craerUriCorrals(String id){
+            return URI_CONTENIDO.buildUpon().appendPath(id).build();
+        }
+
+    }
+
+
+    public static class  Warehouse implements ColumnasWarehouse{
+        public static final Uri URI_CONTENIDO =
+                URI_BASE.buildUpon().appendPath(RUTA_WAREHOUSE).build();
+
+       /* public static final String ID = "id";
+        public static final String NAME = "name";
+        public static final String BATCH = "batch";
+        public static final String CREATE = "created_at";
+        public static final  String UPDATE = "updated_at";
+
+        public static final String ESTADO = "estado";
+        public static final String ID_REMOTA = "idRemota";
+        public static final String PENDIENTE_INSERCION = "pendiente_insercion";*/
+
+
+
+        public static  String obtnerIdWarehouse(Uri uri){
+            return uri.getLastPathSegment();
+        }
+        public static  Uri craerUriWarehouse(String id){
+            return URI_CONTENIDO.buildUpon().appendPath(id).build();
+        }
+
+
+    }
+
+    public static class Weighings implements ColumnasWeighings{
+        public static final Uri URI_CONTENIDO =
+                URI_BASE.buildUpon().appendPath(RUTA_WEIGHINGS).build();
+
+        /*public static final String ID = "id";
+        public static final String NAME = "name";
+        public static final String BRIDS = "batch";
+        public static final String AGE = "AGE";
+        public static final  String CREATE = "created_at";
+        public static final String UPDATE = "updated_at";
+
+        public static final String ESTADO = "estado";
+        public static final String ID_REMOTA = "idRemota";
+        public static final String PENDIENTE_INSERCION = "pendiente_insercion";*/
+
+        public static  String obtnerIdWeighings(Uri uri){
+            return uri.getLastPathSegment();
+        }
+        public static  Uri craerUriWeighings(String id){
+            return URI_CONTENIDO.buildUpon().appendPath(id).build();
+        }
+
+
+    }
+
+
+
+
+private ContratosData(){
+
+}
+}
