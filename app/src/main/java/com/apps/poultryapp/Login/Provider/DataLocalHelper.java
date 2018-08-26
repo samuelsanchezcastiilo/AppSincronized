@@ -41,29 +41,13 @@ public class DataLocalHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        /*db.execSQL(String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT  NOT NULL, %s TEXT  NOT NULL, %s TEXT  NOT NULL," +
-                        "%s  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,%s  TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                        "%s TEXT UNIQUE NOT NULL,%s INTEGER NOT NULL DEFAULT 0, %s TEXT NOT NULL %s)",
-                Tablas.BATCHES, BaseColumns._ID,
-                ContratosData.Batches.ID,
-                ContratosData.Batches.NAME,
-                ContratosData.Batches.COMPANY,
-                ContratosData.Batches.FINALIZED,
-                ContratosData.Batches.CREATE,
-                ContratosData.Batches.UPDATE,
-                ContratosData.Batches.ID_REMOTA,
-                ContratosData.Batches.ESTADO,
-                ContratosData.Batches.PENDIENTE_INSERCION
-        ));*/
-
         db.execSQL("CREATE TABLE "+ Tablas.BATCHES + " (" +
-                ContratosData.Batches.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ContratosData.Batches.ID+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContratosData.Batches.NAME + " TEXT, "+
                 ContratosData.Batches.COMPANY + " TEXT, " +
                 ContratosData.Batches.FINALIZED + " TEXT, " +
-                ContratosData.Batches.CREATE+ " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
-                ContratosData.Batches.UPDATE+ " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                ContratosData.Batches.CREATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                ContratosData.Batches.UPDATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 ContratosData.Batches.ID_REMOTA + " TEXT UNIQUE," +
                 ContratosData.Batches.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContratosData.ESTADO_OK+"," +
                 ContratosData.Batches.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)");
@@ -74,8 +58,8 @@ public class DataLocalHelper extends SQLiteOpenHelper {
                 ContratosData.Warehouse.NAME + " TEXT, "+
                 ContratosData.Warehouse.BATCH + " TEXT, " +
                 ContratosData.Warehouse.COMPANY + " TEXT, " +
-                ContratosData.Warehouse.CREATE+ " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
-                ContratosData.Warehouse.UPDATE+ " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                ContratosData.Warehouse.CREATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                ContratosData.Warehouse.UPDATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 ContratosData.Warehouse.ID_REMOTA + " TEXT UNIQUE," +
                 ContratosData.Warehouse.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContratosData.ESTADO_OK+"," +
                 ContratosData.Warehouse.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)");
@@ -84,9 +68,11 @@ public class DataLocalHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE "+ Tablas.CORRALS + " (" +
                 ContratosData.Corrals.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContratosData.Corrals.NAME + " TEXT, "+
+                ContratosData.Corrals.WAREHOUSE + " TEXT, "+
                 ContratosData.Corrals.AGE + " TEXT, " +
-                ContratosData.Corrals.CREATE+ " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
-                ContratosData.Corrals.UPDATE+ " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                ContratosData.Corrals.COMPANY + " TEXT, " +
+                ContratosData.Corrals.CREATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                ContratosData.Corrals.UPDATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 ContratosData.Corrals.ID_REMOTA + " TEXT UNIQUE," +
                 ContratosData.Corrals.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContratosData.ESTADO_OK+"," +
                 ContratosData.Corrals.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)");
@@ -96,62 +82,14 @@ public class DataLocalHelper extends SQLiteOpenHelper {
                 ContratosData.Weighings.NAME + " TEXT, "+
                 ContratosData.Weighings.BRIDS + " TEXT, " +
                 ContratosData.Weighings.AGE + " TEXT, " +
+                ContratosData.Weighings.COMPANY + " TEXT, " +
+                ContratosData.Weighings.CORRAL + " TEXT, " +
                 ContratosData.Weighings.CREATE+ " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 ContratosData.Weighings.UPDATE+ " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 ContratosData.Weighings.ID_REMOTA + " TEXT UNIQUE," +
                 ContratosData.Weighings.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContratosData.ESTADO_OK+"," +
                 ContratosData.Weighings.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)");
 
-
-
-
-
-
-
-        /*db.execSQL(String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT  NOT NULL, %s TEXT  NOT NULL,%s INTEGER  NOT NULL," +
-                        "%s  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,%s  TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                        "%s TEXT UNIQUE NOT NULL,%s INTEGER NOT NULL DEFAULT 0, %s TEXT NOT NULL %s)",
-                Tablas.CORRALS, BaseColumns._ID,
-                ContratosData.Corrals.ID,
-                ContratosData.Corrals.NAME,
-                ContratosData.Corrals.WAREHOUSE,
-                ContratosData.Corrals.AGE,
-                ContratosData.Corrals.CREATE,
-                ContratosData.Corrals.UPDATE,
-                ContratosData.Corrals.ID_REMOTA,
-                ContratosData.Corrals.ESTADO,
-                ContratosData.Corrals.PENDIENTE_INSERCION
-        ));
-        db.execSQL(String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT  NOT NULL, %s TEXT  NOT NULL, " +
-                        "%s  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,%s  TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                        "%s TEXT UNIQUE NOT NULL,%s INTEGER NOT NULL DEFAULT 0, %s TEXT NOT NULL %s)",
-                Tablas.WAREHOUSE, BaseColumns._ID,
-                ContratosData.Warehouse.ID,
-                ContratosData.Warehouse.NAME,
-                ContratosData.Warehouse.BATCH,
-                ContratosData.Warehouse.CREATE,
-                ContratosData.Warehouse.UPDATE,
-                ContratosData.Warehouse.ID_REMOTA,
-                ContratosData.Warehouse.ESTADO,
-                ContratosData.Warehouse.PENDIENTE_INSERCION
-
-        ));
-        db.execSQL(String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "%s TEXT  NOT NULL, %s TEXT  NOT NULL, %s INTEGER NOT NULL, " +
-                        "%s  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,%s  TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
-                        "%s TEXT UNIQUE NOT NULL,%s INTEGER NOT NULL DEFAULT 0, %s TEXT NOT NULL %s)",
-                Tablas.WEIGHINGS, BaseColumns._ID,
-                ContratosData.Weighings.ID,
-                ContratosData.Weighings.NAME,
-                ContratosData.Weighings.BRIDS,
-                ContratosData.Weighings.AGE,
-                ContratosData.Weighings.CREATE,
-                ContratosData.Weighings.UPDATE,
-                ContratosData.Weighings.ID_REMOTA,
-                ContratosData.Weighings.ESTADO,
-                ContratosData.Weighings.PENDIENTE_INSERCION));*/
     }
 
     @Override

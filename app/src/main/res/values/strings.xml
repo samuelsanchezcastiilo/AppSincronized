@@ -12,7 +12,7 @@
     <string name="create_lote">Creado el</string>
     <string name="date_text">09/08/2018</string>
     <string name="lote_text">Lote</string>
-    <string name="text_code_galpon">Codigo Galpon</string>
+    <string name="text_code_galpon">Galpon</string>
     <string name="text_desc_galpones">Codigo Galpon</string>
     <string name="text_new_lote">Registre un nuevo lote</string>
     <string name="action_text_new_lote">Codigo</string>
@@ -22,7 +22,7 @@
 
     <string name="account_type">com.apps.poultryapp.account</string>
     <string name="provider_authority">com.apps.poultryapp</string>
-    <string name="text_desc_corrals">Codigo Corral</string>
+    <string name="text_desc_corrals">Nombre Corral</string>
 
 
     <string-array name="array_galpones">

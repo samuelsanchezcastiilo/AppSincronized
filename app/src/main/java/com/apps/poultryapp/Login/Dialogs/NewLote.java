@@ -61,15 +61,12 @@ public class NewLote extends DialogFragment {
     }
 
     public void SaveLote(){
+        if (lote.getText().toString().isEmpty()){
+            lote.setError("Escriba un lote");
+            return;
+        }
         String lot = lote.getText().toString();
-
-
-
-
-
       String company =   SessionPref.get(getContext()).getPrefUserCompany();
-
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(ContratosData.Batches.NAME,lot);
         contentValues.put(ContratosData.Batches.COMPANY,company);
@@ -77,8 +74,6 @@ public class NewLote extends DialogFragment {
         contentValues.put(ContratosData.Batches.CREATE,getDateTime());
         contentValues.put(ContratosData.Batches.UPDATE,getDateTime());
         contentValues.put(ContratosData.Batches.PENDIENTE_INSERCION, 1);
-
-
         getActivity().getContentResolver().insert(ContratosData.CONTENT_URI,contentValues);
         SyncAdapter.sincronizarAhora(getContext(),true);
         dismiss();

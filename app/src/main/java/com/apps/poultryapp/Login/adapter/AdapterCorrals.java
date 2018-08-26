@@ -21,26 +21,28 @@ public class AdapterCorrals  extends RecyclerView.Adapter<AdapterCorrals.Expense
     public ExpenseViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.card_lotes, viewGroup, false);
+                .inflate(R.layout.card_corrales, viewGroup, false);
         return new AdapterCorrals.ExpenseViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int i) {
         cursor.moveToPosition(i);
-        String lote;
         String galpon;
         String fecha;
         String corral;
+        String age;
 
-        lote = cursor.getString(1);
+
         galpon = cursor.getString(2);
-        fecha = cursor.getString(3);
-        corral = cursor.getString(4);
-        holder.lote.setText(lote);
+        fecha = cursor.getString(5);
+        age = cursor.getString(3);
+        corral = cursor.getString(1);
         holder.corral.setText(corral);
         holder.fecha.setText(fecha);
         holder.galpon.setText(galpon);
+        holder.age.setText(age);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,17 +61,17 @@ public class AdapterCorrals  extends RecyclerView.Adapter<AdapterCorrals.Expense
 
     public static class ExpenseViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView lote;
+        private TextView age;
         private TextView galpon;
         private TextView fecha;
         private TextView corral;
 
         public ExpenseViewHolder(View v) {
             super(v);
-            lote = v.findViewById(R.id.text_code_galpon);
             galpon  = v.findViewById(R.id.code_galpon);
             fecha  = v.findViewById(R.id.date_text_galpon);
             corral  = v.findViewById(R.id.code_corral);
+            age = v.findViewById(R.id.age_galpon);
         }
     }
 

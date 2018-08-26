@@ -60,9 +60,9 @@ public class AdapterWarehouse extends RecyclerView.Adapter<AdapterWarehouse.Expe
         DataLocalHelper dataLocalHelper = new DataLocalHelper(context);
         SQLiteDatabase sql = dataLocalHelper.getWritableDatabase();
 
-       String id = cursor.getString(2);
-        System.out.println("antes de la consulta" + id);
-        Cursor c = sql.rawQuery("SELECT name FROM batches  WHERE idRemota = '"+id+"' ",null);
+       //String id = cursor.getString(2);
+       // System.out.println("antes de la consulta" + id);
+        /*Cursor c = sql.rawQuery("SELECT name FROM batches  WHERE idRemota = '"+id+"' ",null);
 
         try {
             if (c.moveToFirst()){
@@ -73,7 +73,7 @@ public class AdapterWarehouse extends RecyclerView.Adapter<AdapterWarehouse.Expe
             }
         }catch (Exception e){
             System.out.println(e);
-        }
+        }*/
 
 
         String galpon;
@@ -81,7 +81,8 @@ public class AdapterWarehouse extends RecyclerView.Adapter<AdapterWarehouse.Expe
 
 
 
-        //lote = cursor.getString(0);
+
+        lote = cursor.getString(2);
         galpon = cursor.getString(1);
         fecha = cursor.getString(5);
 

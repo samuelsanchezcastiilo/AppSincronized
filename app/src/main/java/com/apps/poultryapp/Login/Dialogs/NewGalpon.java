@@ -56,7 +56,7 @@ public class NewGalpon extends DialogFragment{
         lote = (Spinner)view.findViewById(R.id.code_lotes);
         lLotes = new ArrayList<>();
         dataLocalHelper  = new DataLocalHelper(getContext());
-         sql = dataLocalHelper.getWritableDatabase();
+        sql = dataLocalHelper.getWritableDatabase();
         adapterLotes = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,lLotes);
         lote.setAdapter(adapterLotes);
         String prueba = idLoteSelect();
@@ -68,12 +68,12 @@ public class NewGalpon extends DialogFragment{
         Button saveGalpon = (Button) view.findViewById(R.id.new_galpon);
 
         saveGalpon.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
                 saveGalpon();
 
-           }
-       });
+            }
+        });
 
         alertDialog.setView(view);
         return alertDialog.create();
@@ -140,7 +140,6 @@ public class NewGalpon extends DialogFragment{
         contentValues.put(ContratosData.Warehouse.COMPANY,company);
         contentValues.put(ContratosData.Warehouse.CREATE,getDateTime());
         contentValues.put(ContratosData.Warehouse.UPDATE,getDateTime());
-        contentValues.put(ContratosData.Warehouse.PENDIENTE_INSERCION,1);
 
         getActivity().getContentResolver().insert(ContratosData.CONTENT_URI_WAREHOUSE,contentValues);
         SyncAdapter.sincronizarAhora(getContext(),true);

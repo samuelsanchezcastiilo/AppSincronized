@@ -27,7 +27,7 @@
         android:orientation="horizontal">
 
         <Spinner
-            android:id="@+id/code_galpon"
+            android:id="@+id/spinner_code_galpon"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:textAlignment="center"

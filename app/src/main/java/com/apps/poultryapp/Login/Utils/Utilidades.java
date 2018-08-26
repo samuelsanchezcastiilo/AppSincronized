@@ -15,8 +15,7 @@ public class Utilidades {
 
 
 
-    public static final int COLUMNA_ID = 0;
-    public static final int COLUMNA_ID_REMOTA = 1;
+
     public static final int COLUMNA_NAME = 2;
     public static final int COLUMNA_COMPANY = 3;
     public static final int COLUMNA_FINALIZED= 4;
@@ -28,6 +27,24 @@ public class Utilidades {
     public static final int COLUMNA_COMPANY_GALPON = 4;
     public static final int COLUMNA_CRATE_GALPON = 5;
     public static final int COLUMNA_UPDATE_GALPON= 6;
+
+
+    public static final int COLUMNA_NAME_CORRAL = 2;
+    public static final int COLUMNA_WAREHOUSE_CORRAL= 3;
+    public static final int COLUMNA_AGE_CORRAL = 4;
+    public static final int COLUMNA_COMPANY_CORRAL = 5;
+    public static final int COLUMNA_CRATE_CORRAL= 6;
+    public static final int COLUMNA_UPDATE_CORRAL= 7;
+
+
+
+    public static final int COLUMNA_NAME_WEIGHINGS= 2;
+    public static final int COLUMNA_BRIDS_WEIGHINGS= 3;
+    public static final int COLUMNA_AGE_WEIGHINGS = 4;
+    public static final int COLUMNA_COMPANY_WEIGHINGS = 5;
+    public static final int COLUMNA_CORRAL_WEIGHINGS = 6;
+    public static final int COLUMNA_CRATE_WEIGHINGS= 7;
+    public static final int COLUMNA_UPDATE_WEIGHINGS= 8;
 
 
 
@@ -72,8 +89,6 @@ public class Utilidades {
             e.printStackTrace();
         }
 
-        Log.i("Cursor a JSONObject", String.valueOf(jObject));
-
         return jObject;
     }
 
@@ -102,9 +117,73 @@ public class Utilidades {
             e.printStackTrace();
         }
 
-        Log.i(" EN UTILIDADES", String.valueOf(jObject));
+        return jObject;
+    }
+
+
+
+    public static JSONObject deCursorAJSONObjectCorrals(Cursor c) {
+        JSONObject jObject = new JSONObject();
+        String name;
+        String warehouse;
+        String age;
+        String company;
+        String create;
+        String update;
+
+        name = c.getString(COLUMNA_NAME_CORRAL);
+        warehouse = c.getString(COLUMNA_WAREHOUSE_CORRAL);
+        age =  c.getString(COLUMNA_AGE_CORRAL);
+        company = c.getString(COLUMNA_COMPANY_CORRAL);
+        create = c.getString(COLUMNA_CRATE_CORRAL);
+        update = c.getString(COLUMNA_UPDATE_CORRAL);
+
+        try {
+            jObject.put(ContratosData.Corrals.NAME, name);
+            jObject.put(ContratosData.Corrals.WAREHOUSE, warehouse);
+            jObject.put(ContratosData.Corrals.AGE, age);
+            jObject.put(ContratosData.Corrals.COMPANY, company);
+            jObject.put(ContratosData.Corrals.CREATE, create);
+            jObject.put(ContratosData.Corrals.UPDATE, update);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return jObject;
     }
+
+    public static JSONObject deCursorAJSONObjectWeighings(Cursor c) {
+        JSONObject jObject = new JSONObject();
+        String name;
+        String brids;
+        String age;
+        String company;
+        String corral;
+        String create;
+        String update;
+
+        name = c.getString(COLUMNA_NAME_WEIGHINGS);
+        brids = c.getString(COLUMNA_BRIDS_WEIGHINGS);
+        age =  c.getString(COLUMNA_AGE_WEIGHINGS);
+        company = c.getString(COLUMNA_COMPANY_WEIGHINGS);
+        corral   = c.getString(COLUMNA_CORRAL_WEIGHINGS);
+        create = c.getString(COLUMNA_CRATE_CORRAL);
+        update = c.getString(COLUMNA_UPDATE_CORRAL);
+
+        try {
+            jObject.put(ContratosData.Weighings.NAME, name);
+            jObject.put(ContratosData.Weighings.BRIDS, brids);
+            jObject.put(ContratosData.Weighings.AGE, age);
+            jObject.put(ContratosData.Weighings.COMPANY, company);
+            jObject.put(ContratosData.Weighings.CORRAL, corral);
+            jObject.put(ContratosData.Weighings.CREATE, create);
+            jObject.put(ContratosData.Weighings.UPDATE, update);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jObject;
+    }
+
 
 }

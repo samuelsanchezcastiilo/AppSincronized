@@ -89,6 +89,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         relative_main  =  findViewById(R.id.relative_main);
         img_page_start = findViewById(R.id.img_page_start);
+        //SyncAdapter.inicializarSyncAdapter(getApplicationContext());
     }
 
 

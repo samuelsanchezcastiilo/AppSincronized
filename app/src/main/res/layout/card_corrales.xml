@@ -31,20 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             >
-            <TextView
-                android:id="@+id/code_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lote_text"
 
-                android:layout_marginBottom="1dp"/>
-            <TextView
-                android:id="@+id/text_data_code"
-                android:layout_below="@+id/code_text"
-                android:layout_width="wrap_content"
-                android:text="@string/app_name"
-                android:textColor="@color/primary_dark"
-                android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/text_code_galpon"
                 android:layout_width="wrap_content"
@@ -65,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/code_galpon"
                 android:text="@string/create_lote"
+                android:padding="2dp"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -79,14 +67,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/date_text_galpon"
-                android:text="@string/text_desc_corrals"/>
+                android:text="@string/text_desc_corrals"
+                android:padding="2dp"/>
             <TextView
                 android:id="@+id/code_corral"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_code_corral"
                 android:textColor="@color/primary_dark"
-                android:text="@string/app_name"/>
+                android:text="@string/app_name"
+                android:padding="2dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/code_corral"
+                android:text="AGE"
+                android:id="@+id/tex_age"
+                android:padding="2dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tex_age"
+                android:text="2"
+                android:id="@+id/age_galpon"
+                android:textColor="@color/primary_dark"
+                android:paddingBottom="5dp"
+                />
 
             <ImageButton
                 android:layout_width="wrap_content"

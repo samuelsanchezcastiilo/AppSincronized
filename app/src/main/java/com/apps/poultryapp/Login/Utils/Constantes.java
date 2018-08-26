@@ -18,25 +18,32 @@ public class Constantes {
 
     public static final String GET_URL_WAREHOUSE = IP + "/api/getWarehouse";
     public static final String INSERT_URL_WAREHOUSE = IP + "/api/savewarehouse";
+
+    public static final String GET_URL_CORRALS = IP + "/api/getCorrals";
+    public static final String INSERT_URL_CORRALS = IP + "/api/savecorral";
     /**
      * Campos de las respuestas Json
      */
 /* campos para la tabla lote */
-    public static final String ID = "id";
+    public static final String ID_BATCH = "id";
+    public static final String ID_WAREHOUSE = "id";
     public static final String ESTADO = "estado";
 
 
 
     public static final String BATCHES = "batches";
     public static final String WAREHOUSE = "warehouse";
-    public static final String WEIGHIGS = "weighings";
+    public static final String WEIGHINGS = "weighings";
     public static final String CORRALS = "corrals";
 
 
     public static final String MENSAJE = "mensaje";
 
-    public static final String SUCCESS = "1";
-    public static final String FAILED = "2";
+    public static final String SUCCESS_BATCHES = "1";
+    public static final String FAILED_BATCHES = "2";
+
+    public static final String SUCCESS_WAREHOUSE = "1";
+    public static final String FAILED_WAREHOUSE = "2";
 
     /**
      * Tipo de cuenta para la sincronización
