@@ -69,7 +69,7 @@ public class AdapterBatches extends RecyclerView.Adapter<AdapterBatches.ExpenseV
             @Override
             public void onClick(View v) {
 
-                //Toast.makeText(context,"se presiono",Toast.LENGTH_SHORT ).show();
+                Toast.makeText(context,"se presiono",Toast.LENGTH_SHORT ).show();
             }
         });
     }

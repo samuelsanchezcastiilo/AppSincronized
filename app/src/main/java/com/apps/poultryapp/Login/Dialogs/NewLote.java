@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apps.poultryapp.Login.Login.Data.SessionPref;
 import com.apps.poultryapp.Login.Provider.ContratosData;
@@ -67,6 +68,9 @@ public class NewLote extends DialogFragment {
         }
         String lot = lote.getText().toString();
       String company =   SessionPref.get(getContext()).getPrefUserCompany();
+      if (lot == null || company == null){
+          Toast.makeText(getContext(),"no hay lote", Toast.LENGTH_SHORT).show();
+      }
         ContentValues contentValues = new ContentValues();
         contentValues.put(ContratosData.Batches.NAME,lot);
         contentValues.put(ContratosData.Batches.COMPANY,company);

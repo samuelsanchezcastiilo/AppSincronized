@@ -37,9 +37,6 @@ public class Lotes extends Fragment implements LoaderManager.LoaderCallbacks<Cur
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-
         View view = inflater.inflate(R.layout.fragment_lotes, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_lotes);
         layoutManager = new LinearLayoutManager(getContext());
@@ -47,11 +44,9 @@ public class Lotes extends Fragment implements LoaderManager.LoaderCallbacks<Cur
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapterBatches);
 
+
         getLoaderManager().initLoader(0,null,this);
         SyncAdapter.inicializarSyncAdapter(getContext());
-
-
-
 
         return view;
     }

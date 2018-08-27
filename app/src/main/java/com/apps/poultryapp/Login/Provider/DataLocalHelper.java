@@ -42,7 +42,7 @@ public class DataLocalHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("CREATE TABLE "+ Tablas.BATCHES + " (" +
-                ContratosData.Batches.ID+ " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ContratosData.Batches.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ContratosData.Batches.NAME + " TEXT, "+
                 ContratosData.Batches.COMPANY + " TEXT, " +
                 ContratosData.Batches.FINALIZED + " TEXT, " +

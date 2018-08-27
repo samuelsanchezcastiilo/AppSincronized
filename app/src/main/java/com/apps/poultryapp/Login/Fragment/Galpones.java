@@ -40,13 +40,13 @@ public class Galpones extends Fragment implements LoaderManager.LoaderCallbacks<
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_galpones2, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_galpones);
+       /* recyclerView = (RecyclerView) view.findViewById(R.id.recycler_galpones);
         layoutManager =  new LinearLayoutManager(getContext());
         adapterWarehouse = new AdapterWarehouse(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapterWarehouse);
         getLoaderManager().initLoader(0,null,this);
-        SyncAdapter.inicializarSyncAdapter(getContext());
+        SyncAdapter.inicializarSyncAdapter(getContext());*/
 
         return view;
     }

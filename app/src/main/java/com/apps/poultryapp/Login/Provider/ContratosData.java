@@ -96,7 +96,7 @@ public class ContratosData {
 
 
 
-    public static final String BASE_CONTENIDOS = "warehouse.";
+    public static final String BASE_CONTENIDOS = "poultryapp.";
 
     public static final String TIPO_CONTENIDO = "vnd.android.cursor.dir/vnd."
             + BASE_CONTENIDOS;
@@ -120,35 +120,10 @@ public class ContratosData {
         }
     }
 
-
-
-
     // Valores para la columna ESTADO
     public static final int ESTADO_OK = 0;
     public static final int ESTADO_SYNC = 1;
 
-
-    /**
-     * Estructura de la tabla
-     */
-    /*public static class Columnas implements BaseColumns {
-
-        private Columnas() {
-            // Sin instancias
-        }
-
-        public final static String ID = "id";
-        public final static String NAME = "name";
-        public final static String COMPANY = "company";
-        public final static String FINALIZED = "finalized";
-        public final static String CREATE = "created_at";
-        public final static String UPDATE = "updated_at";
-
-        public static final String ESTADO = "estado";
-        public static final String ID_REMOTA = "idRemota";
-        public final static String PENDIENTE_INSERCION = "pendiente_insercion";
-
-    }*/
 
     public static class Batches implements ColumnasBatches{
 

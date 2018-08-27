@@ -154,13 +154,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         boolean soloSubida = extras.getBoolean(ContentResolver.SYNC_EXTRAS_UPLOAD, false);
 
         if (!soloSubida) {
-            realizarSincronizacionLocal(syncResult);
-            realizarSincronizacionLocalGalpon(syncResult);
-            realizarSincronizacionLocalCorrals(syncResult);
+           realizarSincronizacionLocal(syncResult);
+            //realizarSincronizacionLocalGalpon(syncResult);
+            //realizarSincronizacionLocalCorrals(syncResult);
         } else {
-            realizarSincronizacionRemota();
-            realizarSincronizacionRemotaGalpones();
-            realizarSincronizacionRemotaCorrals();
+           realizarSincronizacionRemota();
+            //realizarSincronizacionRemotaGalpones();
+            //realizarSincronizacionRemotaCorrals();
 
         }
     }
@@ -265,6 +265,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             // Obtener atributo "estado"
             String estado = response.getString(Constantes.ESTADO);
+            Log.e(TAG, "procesarRespuestaGet: " +estado );
 
             switch (estado) {
                 case Constantes.SUCCESS_BATCHES: // EXITO
@@ -332,7 +333,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         if (c.getCount() > 0) {
             while (c.moveToNext()) {
                 final int idLocal = c.getInt(COLUMNA_ID);
-
                 VolleySingleton.getInstance(getContext()).addToRequestQueue(
                         new JsonObjectRequest(
                                 Request.Method.POST,
@@ -350,7 +350,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                         Log.d(TAG, "Error Volley: " + error.getMessage());
                                     }
                                 }
-
                         ) {
                             @Override
                             public Map<String, String> getHeaders() {
@@ -621,7 +620,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     Log.i(TAG, mensaje);
                     finalizarActualizacion(idRemota, idLocal);
                     break;
-
                 case Constantes.FAILED_BATCHES:
                     Log.i(TAG, mensaje);
                     break;
@@ -710,7 +708,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // Tabla hash para recibir las entradas entrantes
         HashMap<String, Batches> expenseMap = new HashMap<String, Batches>();
         for (Batches e : data) {
-            expenseMap.put((String.valueOf(e.id)), e);
+            //expenseMap.put((String.valueOf(e.id)), e);
+            expenseMap.put(e.id, e);
+
         }
 
         // Consultar registros remotos actuales
@@ -718,8 +718,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         String select = ContratosData.Batches.ID_REMOTA + " IS NOT NULL";
         Cursor c = resolver.query(uri, PROJECTION, select, null, null);
         assert c != null;
-
-        Log.i(TAG, "Se encontraron " + c.getCount() + " registros locales.");
+        Log.i(TAG, "Se encontraron " + c.getCount() + " registros locales en lotes .");
 
         // Encontrar datos obsoletos
         String id;
@@ -728,9 +727,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         String finalized;
         String created;
         String update;
+
         while (c.moveToNext()) {
             syncResult.stats.numEntries++;
-
             id = c.getString(COLUMNA_ID_REMOTA);
             name = c.getString(COLUMNA_NAME);
             company = c.getString(COLUMNA_COMPANY);
@@ -743,7 +742,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             if (match != null) {
                 // Esta entrada existe, por lo que se remueve del mapeado
                 expenseMap.remove(id);
-
                 Uri existingUri = ContratosData.CONTENT_URI.buildUpon()
                         .appendPath(id).build();
 
@@ -755,9 +753,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 boolean b4 = match.created_at != null && !match.created_at.equals(created);
                 boolean b5 = match.updated_at != null && !match.updated_at.equals(update);
 
-                if ( b1 || b2 || b3 || b4 || b5) {
+                if (b1 || b2 || b3 || b4 || b5) {
 
-                    Log.i(TAG, "Programando actualización de: " + existingUri);
+                    Log.i(TAG, "Programando actualización de lotes: " + existingUri);
 
                     ops.add(ContentProviderOperation.newUpdate(existingUri)
                             .withValue(ContratosData.Batches.NAME, match.name)
@@ -783,7 +781,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         // Insertar items resultantes
         for (Batches e : expenseMap.values()) {
-            Log.i(TAG, "Programando inserción de: " + e.id);
+            Log.i(TAG, "Programando inserción de: lotes " + e.id);
             ops.add(ContentProviderOperation.newInsert(ContratosData.CONTENT_URI)
                     .withValue(ContratosData.Batches.ID_REMOTA, e.id)
                     .withValue(ContratosData.Batches.NAME, e.name)

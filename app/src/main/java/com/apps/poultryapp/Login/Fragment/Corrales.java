@@ -41,14 +41,14 @@ public class Corrales extends Fragment implements LoaderManager.LoaderCallbacks<
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_corrales, container, false);
-        recyclerView = (RecyclerView)view.findViewById(R.id.recycler_corrals);
+       /* recyclerView = (RecyclerView)view.findViewById(R.id.recycler_corrals);
         linearLayoutManager = new LinearLayoutManager(getContext());
         adapterCorrals = new AdapterCorrals();
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapterCorrals);
 
         getLoaderManager().initLoader(0,null,this);
-        SyncAdapter.inicializarSyncAdapter(getContext());
+        SyncAdapter.inicializarSyncAdapter(getContext());*/
         return view;
     }
 

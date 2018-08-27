@@ -33,8 +33,8 @@ public class ProviderData  extends ContentProvider {
 
     // Casos
 
-    public static final int BATCHES= 300;
-    public static final int BATCHES_ROW= 301;
+    public static final int BATCHES= 100;
+    public static final int BATCHES_ROW= 101;
 
 
 
@@ -45,20 +45,6 @@ public class ProviderData  extends ContentProvider {
     public static final int WAREHOUSE_ROW = 501;
     public static final int WEIGHINGS = 600;
     public static final int WEIGHINGS_ROW = 601;
-
-
-
-  /*  public static final int DETALLES_PEDIDOS = 200;
-    public static final int DETALLES_PEDIDOS_ID = 201;
-
-    public static final int PRODUCTOS = 300;
-    public static final int PRODUCTOS_ID = 301;
-
-    public static final int CLIENTES = 400;
-    public static final int CLIENTES_ID = 401;
-
-    public static final int FORMAS_PAGO = 500;
-    public static final int FORMAS_PAGO_ID = 501;*/
 
     public static final String AUTORIDAD = "com.apps.poultryapp";
 
@@ -94,21 +80,85 @@ public class ProviderData  extends ContentProvider {
         SQLiteDatabase db = dataLocalHelper.getWritableDatabase();
         int match = uriMatcher.match(uri);
         String id;
-        Cursor c;
+        Cursor cursor;
         switch (match) {
             case BATCHES:
-                // Consultando todos los registros
-                c = db.query(DataLocalHelper.Tablas.BATCHES, projection,
-                        selection, selectionArgs,
-                        null, null, sortOrder);
+                cursor = db.query(DataLocalHelper.Tablas.BATCHES, projection,
+                        selection, selectionArgs, null, null, sortOrder);
+                break;
+            case BATCHES_ROW:
+                id = ContratosData.Batches.obtnerIdBatches(uri);
+                cursor = db.query(DataLocalHelper.Tablas.BATCHES, projection,
+                        ContratosData.ColumnasBatches.ID + " = " + id,
+                        selectionArgs, null, null, sortOrder);
+                Log.e(TAG, "query: buscando1= ++++++++++++++++++++++++++++++++++++++" );
+                break;
+            default:
+                throw new IllegalArgumentException("URI no soportada: " + uri);
+        }
+
+
+
+       /* switch (match){
+
+            case BATCHES:
+                c = db.query(DataLocalHelper.Tablas.BATCHES,projection,selection,selectionArgs,null,null,sortOrder);
                 c.setNotificationUri(resolver,ContratosData.CONTENT_URI);
+                break;
+            case BATCHES_ROW:
+                long idBacthes = ContentUris.parseId(uri);
+
+                c = db.query(DataLocalHelper.Tablas.BATCHES, projection, ContratosData.Batches.ID + " = "+idBacthes,
+                        selectionArgs, null, null , sortOrder);
+
+                c.setNotificationUri(
+                        resolver,
+                        ContratosData.CONTENT_URI);
+                break;
+            case WAREHOUSE:
+                c = db.query(DataLocalHelper.Tablas.WAREHOUSE,projection,selection,selectionArgs,null,null,sortOrder);
+                c.setNotificationUri(resolver,ContratosData.CONTENT_URI_WAREHOUSE);
+                break;
+            case WAREHOUSE_ROW:
+                long idwarehouse = ContentUris.parseId(uri);
+
+                c = db.query(DataLocalHelper.Tablas.WAREHOUSE, projection, ContratosData.Warehouse.ID + " = "+idwarehouse,
+                        selectionArgs, null, null , sortOrder);
+
+                c.setNotificationUri(
+                        resolver,
+                        ContratosData.CONTENT_URI_WAREHOUSE);
+                break;
+            /*case CORRALS:
+                c = db.query(DataLocalHelper.Tablas.CORRALS,projection,selection,selectionArgs,null,null,sortOrder);
+                c.setNotificationUri(resolver,ContratosData.CONTENT_URI_CORRALS);
+                break;
+            case CORRALS_ROW:
+                long idCorrals = ContentUris.parseId(uri);
+
+                c = db.query(DataLocalHelper.Tablas.CORRALS, projection, ContratosData.Corrals.ID + " = "+idCorrals,
+                        selectionArgs, null, null , sortOrder);
+
+                c.setNotificationUri(
+                        resolver,
+                        ContratosData.CONTENT_URI_CORRALS);
+                break;*/
+          /*  default:
+                throw new IllegalArgumentException("URI no soportada: " + uri);*/
+
+
+        /*switch (match) {
+            case BATCHES:
+                // Consultando todos los registros
+                c = db.query(DataLocalHelper.Tablas.BATCHES, projection,selection, selectionArgs,null, null, sortOrder);
+                Log.e(TAG, "query: buscando0= ++++++++++++++++++++++++++++++++++++++" );
                 break;
             case BATCHES_ROW:
                 id = ContratosData.Batches.obtnerIdBatches(uri);
                 c = db.query(DataLocalHelper.Tablas.BATCHES, projection,
                         ContratosData.ColumnasBatches.ID + " = " + id,
                         selectionArgs, null, null, sortOrder);
-                c.setNotificationUri(resolver,ContratosData.CONTENT_URI);
+                Log.e(TAG, "query: buscando1= ++++++++++++++++++++++++++++++++++++++" );
                 break;
             case WAREHOUSE:
                 Log.e(TAG, "query: warehose" );
@@ -147,8 +197,11 @@ public class ProviderData  extends ContentProvider {
             default:
                 throw new IllegalArgumentException("URI no soportada: " + uri);
         }
-    //c.setNotificationUri(resolver,uri);
-    return c;
+    c.setNotificationUri(resolver,uri);*/
+        cursor.setNotificationUri(
+                resolver,
+                ContratosData.CONTENT_URI);
+    return cursor;
 
     }
 
@@ -166,11 +219,11 @@ public class ProviderData  extends ContentProvider {
             case WAREHOUSE_ROW:
                 return ContratosData.generarMimeItem("warehouse");
             case CORRALS:
-                return  ContratosData.generarMimeItem("corrals");
+                return  ContratosData.generarMime("corrals");
             case CORRALS_ROW:
                 return  ContratosData.generarMimeItem("corrals");
             case WEIGHINGS:
-                return  ContratosData.generarMimeItem("weighings");
+                return  ContratosData.generarMime("weighings");
             case WEIGHINGS_ROW:
                 return  ContratosData.generarMimeItem("weighings");
                 default:
@@ -193,6 +246,13 @@ public class ProviderData  extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         SQLiteDatabase db = dataLocalHelper.getWritableDatabase();
+
+        ContentValues contentValues;
+        if (values != null) {
+            contentValues = new ContentValues(values);
+        } else {
+            contentValues = new ContentValues();
+        }
 
         if (uriMatcher.match(uri) == BATCHES){
             long rowid = db.insert(DataLocalHelper.Tablas.BATCHES,null,values);
@@ -220,25 +280,29 @@ public class ProviderData  extends ContentProvider {
         }
         throw new SQLException("Falla al insertar fila en : " + uri);
 
-        /*switch (uriMatcher.match(uri)){
+       /*switch (uriMatcher.match(uri)) {
             case BATCHES:
-                db.insert(DataLocalHelper.Tablas.BATCHES,null,values);
+                db.insert(DataLocalHelper.Tablas.BATCHES, null, values);
                 notificarCambio(uri);
+                Log.d(TAG, "insert: insertando0 <> ++++++++++++++++++++++");
                 return ContratosData.Batches.craerUriBatches(values.getAsString(DataLocalHelper.Tablas.BATCHES));
             case WAREHOUSE:
-                db.insert(DataLocalHelper.Tablas.WAREHOUSE,null,values);
+                db.insert(DataLocalHelper.Tablas.WAREHOUSE, null, values);
                 notificarCambio(uri);
                 return ContratosData.Warehouse.craerUriWarehouse(values.getAsString(DataLocalHelper.Tablas.WAREHOUSE));
             case CORRALS:
-                db.insert(DataLocalHelper.Tablas.CORRALS,null,values);
+                db.insert(DataLocalHelper.Tablas.CORRALS, null, values);
                 notificarCambio(uri);
                 return ContratosData.Corrals.craerUriCorrals(values.getAsString(DataLocalHelper.Tablas.CORRALS));
-            case  WEIGHINGS:
-                db.insert(DataLocalHelper.Tablas.WEIGHINGS,null,values);
+            case WEIGHINGS:
+                db.insert(DataLocalHelper.Tablas.WEIGHINGS, null, values);
                 notificarCambio(uri);
                 return ContratosData.Weighings.craerUriWeighings(values.getAsString(DataLocalHelper.Tablas.WEIGHINGS));
             default:
-                throw new UnsupportedOperationException(URI_NO_SOPORTADA);*/
+                throw new UnsupportedOperationException(URI_NO_SOPORTADA);
+
+    }*/
+
 
         // Inserción de nueva fila
        /* long rowId = db.insert(ContratosData.BATCHES, null, contentValues);
@@ -255,21 +319,20 @@ public class ProviderData  extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         SQLiteDatabase db = dataLocalHelper.getWritableDatabase();
-        String id ;
         int affected;
        switch (uriMatcher.match(uri)){
            case BATCHES:
                affected = db.delete(DataLocalHelper.Tablas.BATCHES,selection,selectionArgs);
-               System.out.println("------------------------"+"eliminando batches");
+               Log.d(TAG, "delete: borrando0 <> -------------------------------------");
                break;
             case BATCHES_ROW:
-                id = ContratosData.Batches.obtnerIdBatches(uri);
+                long id = ContentUris.parseId(uri);
                 affected = db.delete(DataLocalHelper.Tablas.BATCHES,
                         ContratosData.Batches.ID_REMOTA + "=" + id
                                 + (!TextUtils.isEmpty(selection) ?
                                 " AND (" + selection + ')' : ""),
                         selectionArgs);
-                System.out.println("------------------------"+"eliminando batchesRow");
+                Log.d(TAG, "delete: borrando1 <> -------------------------------------");
                 resolver.notifyChange(uri,null,false);
                 break;
            case WAREHOUSE:
@@ -277,9 +340,9 @@ public class ProviderData  extends ContentProvider {
                System.out.println("------------------------"+"eliminando harehouse");
                break;
             case WAREHOUSE_ROW:
-                id = ContratosData.Warehouse.obtnerIdWarehouse(uri);
+                long idw = ContentUris.parseId(uri);
                 affected = db.delete(DataLocalHelper.Tablas.WAREHOUSE,
-                        ContratosData.Warehouse.ID_REMOTA + "=" + id
+                        ContratosData.Warehouse.ID_REMOTA + "=" + idw
                                 + (!TextUtils.isEmpty(selection) ?
                                 " AND (" + selection + ')' : ""),
                         selectionArgs);
@@ -289,7 +352,7 @@ public class ProviderData  extends ContentProvider {
            case  CORRALS:
                affected = db.delete(DataLocalHelper.Tablas.CORRALS,selection,selectionArgs);
                break;
-            case CORRALS_ROW:
+           /* case CORRALS_ROW:
                 id = ContratosData.Warehouse.obtnerIdWarehouse(uri);
                 affected =  db.delete(DataLocalHelper.Tablas.CORRALS,
                         ContratosData.Corrals.ID_REMOTA + "=" + id
@@ -309,7 +372,7 @@ public class ProviderData  extends ContentProvider {
                                 " AND (" + selection + ')' : ""),
                         selectionArgs);
                 resolver.notifyChange(uri,null,false);
-                break;
+                break;*/
 
             default:
                 throw new UnsupportedOperationException(URI_NO_SOPORTADA);
@@ -326,20 +389,21 @@ public class ProviderData  extends ContentProvider {
             case BATCHES:
                 affected = db.update(DataLocalHelper.Tablas.BATCHES, values,
                         selection, selectionArgs);
-                notificarCambio(uri);
+                Log.d(TAG, "update: actualizando0 <> +++++++++++++++++++++++++++++++++");
                 break;
             case BATCHES_ROW:
-                id = ContratosData.Batches.obtnerIdBatches(uri);
+                //id = ContratosData.Batches.obtnerIdBatches(uri);
+                String idb = uri.getPathSegments().get(1);
                 affected = db.update(DataLocalHelper.Tablas.BATCHES, values,
-                        ContratosData.Batches.ID_REMOTA + "=" + id
+                        ContratosData.Batches.ID_REMOTA + "=" + idb
                                 + (!TextUtils.isEmpty(selection) ?
                                 " AND (" + selection + ')' : ""),
                         selectionArgs);
+                Log.d(TAG, "update: actualizando1 <> +++++++++++++++++++++++++++++++++");
                 break;
             case WAREHOUSE:
                 affected = db.update(DataLocalHelper.Tablas.WAREHOUSE, values,
                         selection, selectionArgs);
-                notificarCambio(uri);
                 break;
             case WAREHOUSE_ROW:
                 id = ContratosData.Warehouse.obtnerIdWarehouse(uri);
@@ -348,11 +412,9 @@ public class ProviderData  extends ContentProvider {
                                 + (!TextUtils.isEmpty(selection) ?
                                 " AND (" + selection + ')' : ""),
                         selectionArgs);
-                notificarCambio(uri);
                 break;
             case CORRALS:
                 affected = db.update(DataLocalHelper.Tablas.CORRALS,values,selection,selectionArgs);
-                notificarCambio(uri);
                 break;
             case CORRALS_ROW:
                 id = ContratosData.Corrals.obtnerIdCorrals(uri);
@@ -361,11 +423,9 @@ public class ProviderData  extends ContentProvider {
                                 + (!TextUtils.isEmpty(selection) ?
                                 " AND (" + selection + ')' : ""),
                         selectionArgs);
-                notificarCambio(uri);
                 break;
             case WEIGHINGS:
                 affected = db.update(DataLocalHelper.Tablas.WEIGHINGS,values,selection,selectionArgs);
-                notificarCambio(uri);
                 break;
             case WEIGHINGS_ROW:
                 id = ContratosData.Weighings.obtnerIdWeighings(uri);
@@ -374,7 +434,7 @@ public class ProviderData  extends ContentProvider {
                                 + (!TextUtils.isEmpty(selection) ?
                                 " AND (" + selection + ')' : ""),
                         selectionArgs);
-                notificarCambio(uri);
+
                 break;
             default:
                 Log.e(TAG, "update: "+ uri );
