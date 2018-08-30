@@ -56,7 +56,7 @@ public class NewCorral extends DialogFragment{
 
         dataLocalHelper  = new DataLocalHelper(getContext());
         sql = dataLocalHelper.getWritableDatabase();
-        nameGalpon = getNameGalpon();
+        nameGalpon = getIDGalpon();
 
         adapterGalpones = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,listGalpones);
         galpones.setAdapter(adapterGalpones);
@@ -96,12 +96,22 @@ public class NewCorral extends DialogFragment{
         }
 
     }
-    public String getNameGalpon(){
+    public String getIDGalpon(){
 
         galpones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                 nameGalpon = parent.getItemAtPosition(position).toString();
+                String name  = parent.getItemAtPosition(position).toString();
+                Cursor c = sql.rawQuery("SELECT idRemota FROM warehouse WHERE name = '"+name+"' ",null);
+                try {
+                    if (c.moveToFirst()){
+                        nameGalpon = String.valueOf(c.getInt(0));
+
+                    }
+                }catch (Exception e){
+                    System.out.println(e);
+                }
+
             }
 
             @Override
@@ -123,7 +133,7 @@ public class NewCorral extends DialogFragment{
         String corrals = nameCorrals.getText().toString();
         if (nameGalpon == null)
         {
-            nameGalpon = getNameGalpon();
+            nameGalpon = getIDGalpon();
         }
         String company =   SessionPref.get(getContext()).getPrefUserCompany();
 

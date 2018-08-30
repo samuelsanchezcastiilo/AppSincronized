@@ -26,6 +26,7 @@ import com.apps.poultryapp.Login.Model.Batches;
 
 import com.apps.poultryapp.Login.Model.Corrals;
 import com.apps.poultryapp.Login.Model.WareHouse;
+import com.apps.poultryapp.Login.Model.Weighings;
 import com.apps.poultryapp.Login.Provider.ContratosData;
 import com.apps.poultryapp.Login.Utils.Constantes;
 import com.apps.poultryapp.Login.Utils.Utilidades;
@@ -84,6 +85,20 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             ContratosData.Corrals.COMPANY,
             ContratosData.Corrals.CREATE,
             ContratosData.Corrals.UPDATE
+    };
+
+
+    private static final String[] PROJECTION_PESAJE = new String[]{
+
+            ContratosData.Weighings.ID,
+            ContratosData.Weighings.ID_REMOTA,
+            ContratosData.Weighings.NAME,
+            ContratosData.Weighings.BRIDS,
+            ContratosData.Weighings.AGE,
+            ContratosData.Weighings.COMPANY,
+            ContratosData.Weighings.CORRAL,
+            ContratosData.Weighings.CREATE,
+            ContratosData.Weighings.UPDATE
     };
 
     // Indices para las columnas indicadas en la proyección
@@ -154,13 +169,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         boolean soloSubida = extras.getBoolean(ContentResolver.SYNC_EXTRAS_UPLOAD, false);
 
         if (!soloSubida) {
-           realizarSincronizacionLocal(syncResult);
-            //realizarSincronizacionLocalGalpon(syncResult);
-            //realizarSincronizacionLocalCorrals(syncResult);
+            realizarSincronizacionLocal(syncResult);
+            realizarSincronizacionLocalGalpon(syncResult);
+            realizarSincronizacionLocalCorrals(syncResult);
+            realizarSincronizacionLocalPesajes(syncResult);
         } else {
-           realizarSincronizacionRemota();
-            //realizarSincronizacionRemotaGalpones();
-            //realizarSincronizacionRemotaCorrals();
+            realizarSincronizacionRemota();
+            realizarSincronizacionRemotaGalpones();
+            realizarSincronizacionRemotaCorrals();
+            realizarSincronizacionRemotaPesajes();
 
         }
     }
@@ -282,6 +299,36 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
+    private void realizarSincronizacionLocalPesajes(final SyncResult syncResult) {
+
+        Log.i(TAG, "Actualizando el cliente.");
+        HashMap<String, String> params = new HashMap<String, String>();
+        String company =  SessionPref.get(getContext()).getPrefUserCompany();
+        params.put("company", company);
+
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(
+                new JsonObjectRequest(
+                        Request.Method.POST,
+                        Constantes.GET_URL_PESAJES,
+                        new JSONObject(params),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                procesarRespuestaGetPesajes(response, syncResult);
+                                Log.e(TAG, "onResponse: de lotes " +response );
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //Log.d(TAG, error.networkResponse.toString());
+                                Toast.makeText(getContext(),"sincronixacion Faliida",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                )
+        );
+    }
+
     private void procesarRespuestaGetGalpon(JSONObject response, SyncResult syncResult) {
         try {
             // Obtener atributo "estado"
@@ -292,6 +339,26 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     actualizarDatosLocalesGalpon(response, syncResult);
                     break;
                 case Constantes.FAILED_WAREHOUSE: // FALLIDO
+                    String mensaje = response.getString(Constantes.MENSAJE);
+                    Log.i(TAG, mensaje);
+                    break;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void procesarRespuestaGetPesajes(JSONObject response, SyncResult syncResult) {
+        try {
+            // Obtener atributo "estado"
+            String estado = response.getString(Constantes.ESTADO);
+
+            switch (estado) {
+                case Constantes.SUCCESS_BATCHES: // EXITO
+                    actualizarDatosLocalesPesajes(response, syncResult);
+                    break;
+                case Constantes.FAILED_BATCHES: // FALLIDO
                     String mensaje = response.getString(Constantes.MENSAJE);
                     Log.i(TAG, mensaje);
                     break;
@@ -373,13 +440,62 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         c.close();
     }
 
-    private void realizarSincronizacionRemotaGalpones() {
+    private void realizarSincronizacionRemotaPesajes() {
         Log.i(TAG, "Actualizando el servidor...");
 
+        iniciarActualizacionPesajes();
+
+        Cursor c = obtenerRegistrosSuciosPesajes();
+
+        Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios.");
+
+        if (c.getCount() > 0) {
+            while (c.moveToNext()) {
+                final int idLocal = c.getInt(COLUMNA_ID);
+                VolleySingleton.getInstance(getContext()).addToRequestQueue(
+                        new JsonObjectRequest(
+                                Request.Method.POST,
+                                Constantes.INSERT_URL_PESAJES,
+                                Utilidades.deCursorAJSONObjectWeighings(c),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        procesarRespuestaInsertPesajes(response, idLocal);
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d(TAG, "Error Volley: " + error.getMessage());
+                                    }
+                                }
+                        ) {
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> headers = new HashMap<String, String>();
+                                headers.put("Content-Type", "application/json; charset=utf-8");
+                                headers.put("Accept", "application/json");
+                                return headers;
+                            }
+
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8" + getParamsEncoding();
+                            }
+                        }
+                );
+            }
+
+        } else {
+            Log.i(TAG, "No se requiere sincronización");
+        }
+        c.close();
+    }
+
+    private void realizarSincronizacionRemotaGalpones() {
+        Log.i(TAG, "Actualizando el servidor...");
         iniciarActualizacionGalpones();
-
         Cursor c = obtenerRegistrosSuciosGalpones();
-
         Log.i(TAG, "Se encontraron " + c.getCount() + " registros sucios en galpones.");
 
         if (c.getCount() > 0) {
@@ -402,7 +518,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                                         Log.d(TAG, "Error Volley de galpones: " + error.getMessage());
                                     }
                                 }
-
                         ) {
                             @Override
                             public Map<String, String> getHeaders() {
@@ -491,8 +606,18 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         return resolver.query(uri, PROJECTION, selection, selectionArgs, null);
     }
+    private Cursor obtenerRegistrosSuciosPesajes() {
+        Uri uri = ContratosData.CONTENT_URI_WEIGHINGS;
+        String selection = ContratosData.Weighings.PENDIENTE_INSERCION + "=? AND "
+                + ContratosData.Weighings.ESTADO + "=?";
+        String[] selectionArgs = new String[]{"1", ContratosData.ESTADO_SYNC + ""};
+
+        return resolver.query(uri, PROJECTION_PESAJE, selection, selectionArgs, null);
+    }
+
 
     private Cursor obtenerRegistrosSuciosGalpones() {
+
         Uri uri = ContratosData.CONTENT_URI_WAREHOUSE;
         String selection = ContratosData.Warehouse.PENDIENTE_INSERCION + "=? AND "
                 + ContratosData.Warehouse.ESTADO + "=?";
@@ -522,6 +647,20 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         ContentValues v = new ContentValues();
         v.put(ContratosData.Batches.ESTADO, ContratosData.ESTADO_SYNC);
+
+        int results = resolver.update(uri, v, selection, selectionArgs);
+        Log.i(TAG, "Registros puestos en cola de inserción:" + results);
+    }
+
+
+    private void iniciarActualizacionPesajes() {
+        Uri uri = ContratosData.CONTENT_URI_WEIGHINGS;
+        String selection = ContratosData.Weighings.PENDIENTE_INSERCION + "=? AND "
+                + ContratosData.Weighings.ESTADO + "=?";
+        String[] selectionArgs = new String[]{"1", ContratosData.ESTADO_OK + ""};
+
+        ContentValues v = new ContentValues();
+        v.put(ContratosData.Weighings.ESTADO, ContratosData.ESTADO_SYNC);
 
         int results = resolver.update(uri, v, selection, selectionArgs);
         Log.i(TAG, "Registros puestos en cola de inserción:" + results);
@@ -573,6 +712,19 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         resolver.update(uri, v, selection, selectionArgs);
     }
 
+    private void finalizarActualizacionPesajes(String idRemota, int idLocal) {
+        Uri uri = ContratosData.CONTENT_URI_WEIGHINGS;
+        String selection = ContratosData.Weighings.ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(idLocal)};
+
+        ContentValues v = new ContentValues();
+        v.put(ContratosData.Weighings.PENDIENTE_INSERCION, "0");
+        v.put(ContratosData.Weighings.ESTADO, ContratosData.ESTADO_OK);
+        v.put(ContratosData.Weighings.ID_REMOTA, idRemota);
+
+        resolver.update(uri, v, selection, selectionArgs);
+    }
+
     private void finalizarActualizacionGalpones(String idRemota, int idLocal) {
         Uri uri = ContratosData.CONTENT_URI_WAREHOUSE;
         String selection = ContratosData.Warehouse.ID + "=?";
@@ -619,6 +771,30 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 case Constantes.SUCCESS_BATCHES:
                     Log.i(TAG, mensaje);
                     finalizarActualizacion(idRemota, idLocal);
+                    break;
+                case Constantes.FAILED_BATCHES:
+                    Log.i(TAG, mensaje);
+                    break;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void procesarRespuestaInsertPesajes(JSONObject response, int idLocal) {
+
+        try {
+            // Obtener estado
+            String estado = response.getString(Constantes.ESTADO);
+            // Obtener mensaje
+            String mensaje = response.getString(Constantes.MENSAJE);
+            // Obtener identificador del nuevo registro creado en el servidor
+            String idRemota = response.getString(Constantes.ID_BATCH);
+
+            switch (estado) {
+                case Constantes.SUCCESS_BATCHES:
+                    Log.i(TAG, mensaje);
+                    finalizarActualizacionPesajes(idRemota, idLocal);
                     break;
                 case Constantes.FAILED_BATCHES:
                     Log.i(TAG, mensaje);
@@ -804,6 +980,142 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
             resolver.notifyChange(
                     ContratosData.CONTENT_URI,
+                    null,
+                    false);
+            Log.i(TAG, "Sincronización finalizada.");
+
+        } else {
+            Log.i(TAG, "No se requiere sincronización");
+        }
+
+    }
+
+    private void actualizarDatosLocalesPesajes(JSONObject response, SyncResult syncResult) {
+
+        JSONArray weighings = null;
+
+        try {
+            // Obtener array "gastos"
+            weighings = response.getJSONArray(Constantes.WEIGHINGS);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // Parsear con Gson
+        Weighings[] res = gson.fromJson(weighings != null ? weighings.toString() : null, Weighings[].class);
+        List<Weighings> data = Arrays.asList(res);
+
+        // Lista para recolección de operaciones pendientes
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+
+        // Tabla hash para recibir las entradas entrantes
+        HashMap<String, Weighings> expenseMap = new HashMap<String, Weighings>();
+        for (Weighings e : data) {
+            //expenseMap.put((String.valueOf(e.id)), e);
+            expenseMap.put(e.id, e);
+
+        }
+
+        // Consultar registros remotos actuales
+        Uri uri = ContratosData.CONTENT_URI_WEIGHINGS;
+        String select = ContratosData.Weighings.ID_REMOTA + " IS NOT NULL";
+        Cursor c = resolver.query(uri, PROJECTION_PESAJE, select, null, null);
+        assert c != null;
+        Log.i(TAG, "Se encontraron " + c.getCount() + " registros locales en pesajes .");
+
+        // Encontrar datos obsoletos
+        String id;
+        String name;
+        String brids;
+        String age;
+        String company;
+        String corral;
+        String created;
+        String update;
+
+        while (c.moveToNext()) {
+            syncResult.stats.numEntries++;
+            id = c.getString(COLUMNA_ID_REMOTA);
+            name = c.getString(2);
+            brids = c.getString(3);
+            age = c.getString(4);
+            company = c.getString(5);
+            corral = c.getString(6);
+            created = c.getString(7);
+            update = c.getString(8);
+
+            Weighings match = expenseMap.get(id);
+
+            if (match != null) {
+                // Esta entrada existe, por lo que se remueve del mapeado
+                expenseMap.remove(id);
+                Uri existingUri = ContratosData.CONTENT_URI_WEIGHINGS.buildUpon()
+                        .appendPath(id).build();
+
+                // Comprobar si el gasto necesita ser actualizado
+
+                boolean b1 = match.name != null && !match.name.equals(name);
+                boolean b2 = match.brids != null && !match.brids.equals(brids);
+                boolean b3 = match.age != null && !match.age.equals(age);
+                boolean b4 = match.company != null && !match.company.equals(company);
+                boolean b5 = match.corral != null && !match.corral.equals(corral);
+                boolean b6 = match.created_at != null && !match.created_at.equals(created);
+                boolean b7 = match.updated_at != null && !match.updated_at.equals(update);
+
+                if (b1 || b2 || b3 || b4 || b5|| b6 || b7) {
+
+                    Log.i(TAG, "Programando actualización de lotes: " + existingUri);
+
+                    ops.add(ContentProviderOperation.newUpdate(existingUri)
+                            .withValue(ContratosData.Weighings.NAME, match.name)
+                            .withValue(ContratosData.Weighings.BRIDS, match.brids)
+                            .withValue(ContratosData.Weighings.AGE, match.age)
+                            .withValue(ContratosData.Weighings.COMPANY, match.company)
+                            .withValue(ContratosData.Weighings.CORRAL, match.corral)
+                            .withValue(ContratosData.Weighings.CREATE, match.created_at)
+                            .withValue(ContratosData.Weighings.UPDATE, match.updated_at)
+                            .build());
+                    syncResult.stats.numUpdates++;
+                } else {
+                    Log.i(TAG, "No hay acciones para este registro: " + existingUri);
+                }
+            } else {
+                // Debido a que la entrada no existe, es removida de la base de datos
+                Uri deleteUri = ContratosData.CONTENT_URI_WEIGHINGS.buildUpon()
+                        .appendPath(id).build();
+                Log.i(TAG, "Programando eliminación de: " + deleteUri);
+                ops.add(ContentProviderOperation.newDelete(deleteUri).build());
+                syncResult.stats.numDeletes++;
+            }
+        }
+        c.close();
+
+        // Insertar items resultantes
+        for (Weighings e : expenseMap.values()) {
+            Log.i(TAG, "Programando inserción de: lotes " + e.id);
+            ops.add(ContentProviderOperation.newInsert(ContratosData.CONTENT_URI_WEIGHINGS)
+                    .withValue(ContratosData.Weighings.ID_REMOTA, e.id)
+                    .withValue(ContratosData.Weighings.NAME, e.name)
+                    .withValue(ContratosData.Weighings.BRIDS, e.brids)
+                    .withValue(ContratosData.Weighings.AGE, e.age)
+                    .withValue(ContratosData.Weighings.COMPANY, e.company)
+                    .withValue(ContratosData.Weighings.CORRAL, e.corral)
+                    .withValue(ContratosData.Weighings.CREATE, e.created_at)
+                    .withValue(ContratosData.Weighings.UPDATE, e.updated_at)
+                    .build());
+            syncResult.stats.numInserts++;
+        }
+
+        if (syncResult.stats.numInserts > 0 ||
+                syncResult.stats.numUpdates > 0 ||
+                syncResult.stats.numDeletes > 0) {
+            Log.i(TAG, "Aplicando operaciones...");
+            try {
+                resolver.applyBatch(ContratosData.AUTHORITY, ops);
+            } catch (RemoteException | OperationApplicationException e) {
+                e.printStackTrace();
+            }
+            resolver.notifyChange(
+                    ContratosData.CONTENT_URI_WEIGHINGS,
                     null,
                     false);
             Log.i(TAG, "Sincronización finalizada.");

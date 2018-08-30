@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Login.InsertPesaje">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/head_info"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registre los pesajes de las "
+            android:layout_gravity="center_horizontal"
+            android:textStyle="italic"
+            android:textSize="24sp"
+            android:textColor="@color/primary_dark"
+            android:layout_margin="20px"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aves"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/primary_dark"
+            android:textSize="18sp"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Edad"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/text_age_corral"
+            android:inputType="number"
+            android:padding="5dp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/head_info"
+        android:id="@+id/scrool"
+        android:paddingBottom="50dp"
+        android:fitsSystemWindows="true"
+        android:fillViewport="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/contenAves"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:layout_marginRight="30dp">
+                <TextView
+                    android:id="@+id/code_pesaje_ave"
+                    android:layout_width="10dp"
+                    android:enabled="false"
+                    android:text="1"
+                    android:textColor="@color/primary_dark"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"/>
+                <EditText
+                    android:id="@+id/value_pesaje"
+                    android:inputType="numberDecimal"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Peso del Ave: 1"
+                    />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_below="@+id/contenAves"
+                android:id="@+id/add_new_ave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:layout_marginRight="30dp">
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_below="@+id/add_new_ave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/newBrid"
+                />
+
+
+        </RelativeLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/save_data_pesajes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Guardar"
+        android:background="@color/accent"
+        android:textColor="@color/primary_text"/>
+
+
+
+
+
+
+
+</RelativeLayout>

@@ -55,7 +55,9 @@
                 android:layout_below="@+id/text_create_at"
                 android:text="@string/date_text"
                 />
-            <ImageButton
+
+            <!--<CheckBox
+                android:id="@+id/selected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -63,9 +65,8 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:src="@drawable/ic_add"
-                android:background="@android:color/transparent"
-             />
+                android:checked="false"/>-->
+
         </RelativeLayout>
     </LinearLayout>
 

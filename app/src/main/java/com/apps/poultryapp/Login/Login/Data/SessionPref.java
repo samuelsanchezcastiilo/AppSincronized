@@ -17,7 +17,13 @@ public class SessionPref {
     public static final String PREF_USER_COMPANY = "PREF_USER_COMPANY";
 
 
+    public static  final String LOTE_SELECT = "lote";
+    public static  final String GALPON_SELECT = "galpon";
+    public static  final String CORRAL_SELECT = "galpon";
+
+
     private final SharedPreferences mPrefs;
+    private final SharedPreferences mPrefcon;
 
     private boolean mIsLoggedIn = false;
 
@@ -32,6 +38,8 @@ public class SessionPref {
 
     private SessionPref(Context context) {
         mPrefs = context.getApplicationContext()
+                .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        mPrefcon = context.getApplicationContext()
                 .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
         mIsLoggedIn = !TextUtils.isEmpty(mPrefs.getString(PREF_USER_EMAIL, null));
@@ -53,6 +61,18 @@ public class SessionPref {
 
             mIsLoggedIn = true;
         }
+    }
+
+    public void saveLote(String lote){
+
+        SharedPreferences.Editor editor = mPrefcon.edit();
+        editor.putString(LOTE_SELECT,lote);
+
+    }
+
+    public String getLote(){
+        String lote = mPrefcon.getString(LOTE_SELECT,"no");
+        return lote;
     }
 
     public void logOut(){

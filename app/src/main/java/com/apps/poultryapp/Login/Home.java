@@ -28,6 +28,7 @@ import com.apps.poultryapp.Login.Dialogs.NewLote;
 import com.apps.poultryapp.Login.Fragment.Corrales;
 import com.apps.poultryapp.Login.Fragment.Galpones;
 import com.apps.poultryapp.Login.Fragment.Lotes;
+import com.apps.poultryapp.Login.Fragment.Pesajes;
 import com.apps.poultryapp.Login.Login.Data.SessionPref;
 import com.apps.poultryapp.Login.Login.View.Login;
 import com.apps.poultryapp.Login.Sync.SyncAdapter;
@@ -43,6 +44,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private FloatingActionButton fab;
     private FloatingActionButton fab_main_galpones;
     private FloatingActionButton fab_main_corrales;
+    private FloatingActionButton fab_main_pesajes;
 
 
     private TabLayout mTabLayout;
@@ -56,6 +58,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         initViewPager();
         initView();
     }
+
 
     private void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar_main);
@@ -78,14 +81,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         fab = findViewById(R.id.fab_main);
         fab_main_corrales = findViewById(R.id.fab_main_corrales);
         fab_main_galpones = findViewById(R.id.fab_main_galpones);
+        fab_main_pesajes = findViewById(R.id.fab_main_pesajes);
 
         fab_main_corrales.hide();
         fab_main_galpones.hide();
+        fab_main_pesajes.hide();
         fab.show();
 
         fab.setOnClickListener(this);
         fab_main_galpones.setOnClickListener(this);
         fab_main_corrales.setOnClickListener(this);
+        fab_main_pesajes.setOnClickListener(this);
 
         relative_main  =  findViewById(R.id.relative_main);
         img_page_start = findViewById(R.id.img_page_start);
@@ -138,17 +144,20 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         titles.add("Lotes");
         titles.add("Galpones");
         titles.add("Corrales");
+        titles.add("pesajes");
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
         mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(2)));
+        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(3)));
 
 
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new Lotes());
         fragments.add(new Galpones());
         fragments.add(new Corrales());
+        fragments.add(new Pesajes());
 
-        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.setOffscreenPageLimit(3);
 
         FragmenAdapter mFragmentAdapter = new FragmenAdapter(getSupportFragmentManager(), fragments, titles);
         mViewPager.setAdapter(mFragmentAdapter);
@@ -169,19 +178,30 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             switch (position){
                 case 0:
+                    fab_main_pesajes.hide();
                     fab_main_corrales.hide();
                     fab_main_galpones.hide();
                     fab.show();
                     break;
                 case 1:
+                    fab_main_pesajes.hide();
                     fab.hide();
                     fab_main_corrales.hide();
                     fab_main_galpones.show();
                     break;
                 case 2:
                     fab.hide();
+                    fab_main_pesajes.hide();
                     fab_main_galpones.hide();
                     fab_main_corrales.show();
+                    break;
+
+                case 3:
+
+                    fab.hide();
+                    fab_main_galpones.hide();
+                    fab_main_corrales.hide();
+                    fab_main_pesajes.hide();
                     break;
             }
 
@@ -215,6 +235,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.fab_main_corrales:
                 DialogFragment dialogCorral = new NewCorral();
                 dialogCorral.show(getSupportFragmentManager(),"corral");
+            case R.id.fab_main_pesajes:
+                Intent intent =  new Intent(getApplicationContext(),InsertPesaje.class);
+                startActivity(intent);
                 break;
 
         }

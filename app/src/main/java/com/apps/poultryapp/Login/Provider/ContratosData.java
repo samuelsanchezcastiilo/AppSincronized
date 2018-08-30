@@ -141,7 +141,7 @@ public class ContratosData {
 
     }
 
-    public static class  Warehouse implements ColumnasWarehouse{
+    public static class Warehouse implements ColumnasWarehouse{
         public static final Uri URI_CONTENIDO =
                 URI_BASE.buildUpon().appendPath(RUTA_WAREHOUSE).build();
 

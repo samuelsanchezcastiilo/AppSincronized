@@ -110,7 +110,7 @@ public class NewGalpon extends DialogFragment{
                 Cursor c = sql.rawQuery("SELECT idRemota FROM batches WHERE name = '"+nameLot+"' ",null);
                 try {
                     if (c.moveToFirst()){
-                        idLote = c.getString(0);
+                        idLote = String.valueOf(c.getInt(0));
                     }
                 }catch (Exception e){
                     System.out.println(e);
@@ -121,7 +121,6 @@ public class NewGalpon extends DialogFragment{
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        System.out.println("valor del id"+idLote);
         return idLote;
     }
 
@@ -140,6 +139,7 @@ public class NewGalpon extends DialogFragment{
         contentValues.put(ContratosData.Warehouse.COMPANY,company);
         contentValues.put(ContratosData.Warehouse.CREATE,getDateTime());
         contentValues.put(ContratosData.Warehouse.UPDATE,getDateTime());
+        contentValues.put(ContratosData.Warehouse.PENDIENTE_INSERCION,1);
 
         getActivity().getContentResolver().insert(ContratosData.CONTENT_URI_WAREHOUSE,contentValues);
         SyncAdapter.sincronizarAhora(getContext(),true);

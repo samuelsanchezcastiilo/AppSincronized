@@ -18,20 +18,20 @@ import android.view.ViewGroup;
 import com.apps.poultryapp.Login.Provider.ContratosData;
 import com.apps.poultryapp.Login.Sync.SyncAdapter;
 import com.apps.poultryapp.Login.adapter.AdapterCorrals;
+import com.apps.poultryapp.Login.adapter.AdapterPesajes;
 import com.apps.poultryapp.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Corrales extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
-    private RecyclerView recyclerView;
-    private AdapterCorrals adapterCorrals;
+public class Pesajes extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
     private LinearLayoutManager linearLayoutManager;
+    private AdapterPesajes adapterPesajes;
+    private RecyclerView recyclerView;
 
 
-
-
-    public Corrales() {
+    public Pesajes() {
         // Required empty public constructor
     }
 
@@ -40,34 +40,35 @@ public class Corrales extends Fragment implements LoaderManager.LoaderCallbacks<
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_corrales, container, false);
-        recyclerView = (RecyclerView)view.findViewById(R.id.recycler_corrals);
+        View view =  inflater.inflate(R.layout.fragment_pesajes, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_pesajes);
         linearLayoutManager = new LinearLayoutManager(getContext());
-        adapterCorrals = new AdapterCorrals(getContext());
+        adapterPesajes =  new AdapterPesajes(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapterCorrals);
+        recyclerView.setAdapter(adapterPesajes);
+        SyncAdapter.sincronizarAhora(getContext(), false);
 
         getLoaderManager().initLoader(0,null,this);
         SyncAdapter.inicializarSyncAdapter(getContext());
+
+
         return view;
     }
 
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return new CursorLoader(
-                getContext(),
-                ContratosData.CONTENT_URI_CORRALS,
-                null, null, null, null);
+        return new CursorLoader(getContext(), ContratosData.CONTENT_URI_WEIGHINGS,null,null,null,null);
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        adapterCorrals.swapCursor(data);
+         adapterPesajes.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-     adapterCorrals.swapCursor(null);
+        adapterPesajes.swapCursor(null);
+
     }
 }

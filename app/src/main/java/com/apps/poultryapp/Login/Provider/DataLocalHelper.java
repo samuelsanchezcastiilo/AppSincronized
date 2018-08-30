@@ -36,8 +36,6 @@ public class DataLocalHelper extends SQLiteOpenHelper {
             }
         }
     }
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -61,7 +59,7 @@ public class DataLocalHelper extends SQLiteOpenHelper {
                 ContratosData.Warehouse.CREATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 ContratosData.Warehouse.UPDATE + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 ContratosData.Warehouse.ID_REMOTA + " TEXT UNIQUE," +
-                ContratosData.Warehouse.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContratosData.ESTADO_OK+"," +
+                ContratosData.Warehouse.ESTADO + " INTEGER NOT NULL DEFAULT "+ ContratosData.ESTADO_OK +"," +
                 ContratosData.Warehouse.PENDIENTE_INSERCION + " INTEGER NOT NULL DEFAULT 0)");
 
 

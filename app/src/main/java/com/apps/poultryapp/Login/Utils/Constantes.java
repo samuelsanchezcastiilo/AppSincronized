@@ -21,6 +21,10 @@ public class Constantes {
 
     public static final String GET_URL_CORRALS = IP + "/api/getCorrals";
     public static final String INSERT_URL_CORRALS = IP + "/api/savecorral";
+
+
+    public static final String GET_URL_PESAJES = IP + "/api/getWeighings";
+    public static final String INSERT_URL_PESAJES = IP + "/api/saveWeighings";
     /**
      * Campos de las respuestas Json
      */

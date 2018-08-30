@@ -43,6 +43,7 @@ public class Lotes extends Fragment implements LoaderManager.LoaderCallbacks<Cur
         adapterBatches = new AdapterBatches(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapterBatches);
+        SyncAdapter.sincronizarAhora(getContext(), false);
 
 
         getLoaderManager().initLoader(0,null,this);

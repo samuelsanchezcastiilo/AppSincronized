@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.apps.poultryapp">
-<uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,11 +17,12 @@
         android:theme="@style/AppTheme">
         <service android:name=".Login.Sync.AuthenticationService">
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"></action>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator"/>
+                android:resource="@xml/authenticator" />
         </service>
         <!-- SEVICIO DE SINCRONIZACIÓN -->
         <service
@@ -38,9 +39,7 @@
 
         <activity
             android:name=".Login.Login.View.Login"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name=".Login.Splash"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -51,19 +50,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login.Home"
+        <activity
+            android:name=".Login.Home"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|stateUnchanged">
+            android:windowSoftInputMode="stateHidden|stateUnchanged"></activity>
 
-        </activity>
         <provider
             android:name=".Login.Provider.ProviderData"
             android:authorities="@string/provider_authority"
             android:exported="false"
-            android:syncable="true"/>
+            android:syncable="true" />
 
+        <activity android:name=".Login.InsertPesaje"></activity>
     </application>
 
 </manifest>
