@@ -39,7 +39,7 @@
 
         <activity
             android:name=".Login.Login.View.Login"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".Login.Splash"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -55,7 +55,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|stateUnchanged"></activity>
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
 
         <provider
             android:name=".Login.Provider.ProviderData"
@@ -63,7 +63,8 @@
             android:exported="false"
             android:syncable="true" />
 
-        <activity android:name=".Login.InsertPesaje"></activity>
+        <activity android:name=".Login.InsertPesaje" />
+        <activity android:name=".Login.DetallesItems"></activity>
     </application>
 
 </manifest>

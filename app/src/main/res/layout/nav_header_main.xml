@@ -15,12 +15,6 @@
         android:layout_height="64dp"
         android:src="@mipmap/ic_launcher_round" />
 
-    <TextView
-        android:id="@+id/text_nav_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Poultry"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
 
 </LinearLayout>

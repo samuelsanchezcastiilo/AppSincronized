@@ -13,12 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
+
         <ImageView
-            android:layout_width="70dp"
+            android:layout_width="66dp"
             android:layout_height="70dp"
-            android:src="@drawable/ic_corrales"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_corrales" />
         <TextView
             android:layout_width="1dp"
             android:layout_height="match_parent"
@@ -96,7 +97,7 @@
                 android:paddingBottom="5dp"
                 />
 
-            <ImageButton
+            <!--<ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -106,7 +107,7 @@
                 android:layout_marginRight="20dp"
                 android:src="@drawable/ic_add"
                 android:background="@android:color/transparent"
-                />
+                />-->
         </RelativeLayout>
     </LinearLayout>
 

@@ -2,7 +2,7 @@ package com.apps.poultryapp.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
-
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.apps.poultryapp.Login.Dialogs.NewCorral;
 import com.apps.poultryapp.Login.Dialogs.NewGalpon;
 import com.apps.poultryapp.Login.Dialogs.NewLote;
@@ -44,12 +43,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private FloatingActionButton fab;
     private FloatingActionButton fab_main_galpones;
     private FloatingActionButton fab_main_corrales;
-    private FloatingActionButton fab_main_pesajes;
+
+
 
 
     private TabLayout mTabLayout;
     private RelativeLayout relative_main;
     private ImageView img_page_start;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_home);
         initViewPager();
         initView();
+
+
     }
 
 
@@ -71,7 +75,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        //navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
         View headerView = navigationView.getHeaderView(0);
@@ -81,64 +85,26 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         fab = findViewById(R.id.fab_main);
         fab_main_corrales = findViewById(R.id.fab_main_corrales);
         fab_main_galpones = findViewById(R.id.fab_main_galpones);
-        fab_main_pesajes = findViewById(R.id.fab_main_pesajes);
+
 
         fab_main_corrales.hide();
         fab_main_galpones.hide();
-        fab_main_pesajes.hide();
+
         fab.show();
 
         fab.setOnClickListener(this);
         fab_main_galpones.setOnClickListener(this);
         fab_main_corrales.setOnClickListener(this);
-        fab_main_pesajes.setOnClickListener(this);
+
 
         relative_main  =  findViewById(R.id.relative_main);
         img_page_start = findViewById(R.id.img_page_start);
         //SyncAdapter.inicializarSyncAdapter(getApplicationContext());
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_menu_main_1:
-
-                SyncAdapter.sincronizarAhora(this, false);
-                Toast.makeText(getApplicationContext(),"Sincronizando..",Toast.LENGTH_SHORT).show();
-                //SessionPref.get(getApplicationContext()).logOut();
-                //startActivity(new Intent(Home.this, Login.class));
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout:
-                Toast.makeText(getApplicationContext(),"click",Toast.LENGTH_SHORT).show();
-                SessionPref.get(getApplicationContext()).logOut();
-                startActivity(new Intent(Home.this, Login.class));
-                break;
-            case R.id.nav_about:
-                Toast.makeText(getApplicationContext(),"click",Toast.LENGTH_SHORT).show();
-            break;
-        }
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
     private void initViewPager() {
-    mTabLayout = findViewById(R.id.tab_layout_main);
-    mViewPager = findViewById(R.id.view_pager_main);
+        mTabLayout = findViewById(R.id.tab_layout_main);
+        mViewPager = findViewById(R.id.view_pager_main);
 
         List<String> titles = new ArrayList<>();
         titles.add("Lotes");
@@ -169,53 +135,42 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
     }
-    private ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_menu_main_1:
+                SyncAdapter.sincronizarAhora(this, false);
+                Toast.makeText(getApplicationContext(),"Sincronizando..",Toast.LENGTH_SHORT).show();
+                break;
         }
-        @Override
-        public void onPageSelected(int position) {
+        return super.onOptionsItemSelected(item);
+    }
 
-            switch (position){
-                case 0:
-                    fab_main_pesajes.hide();
-                    fab_main_corrales.hide();
-                    fab_main_galpones.hide();
-                    fab.show();
-                    break;
-                case 1:
-                    fab_main_pesajes.hide();
-                    fab.hide();
-                    fab_main_corrales.hide();
-                    fab_main_galpones.show();
-                    break;
-                case 2:
-                    fab.hide();
-                    fab_main_pesajes.hide();
-                    fab_main_galpones.hide();
-                    fab_main_corrales.show();
-                    break;
-
-                case 3:
-
-                    fab.hide();
-                    fab_main_galpones.hide();
-                    fab_main_corrales.hide();
-                    fab_main_pesajes.hide();
-                    break;
-            }
-
-
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                SessionPref.get(getApplicationContext()).logOut();
+                startActivity(new Intent(Home.this, Login.class));
+                break;
+            case R.id.nav_about:
+                SyncAdapter.sincronizarAhora(this, false);
+                Toast.makeText(getApplicationContext(),"Sincronizando..",Toast.LENGTH_SHORT).show();
+                break;
         }
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
-    };
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.fab_main:
                 DialogFragment dialogFragment =  new NewLote();
@@ -235,11 +190,43 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.fab_main_corrales:
                 DialogFragment dialogCorral = new NewCorral();
                 dialogCorral.show(getSupportFragmentManager(),"corral");
-            case R.id.fab_main_pesajes:
-                Intent intent =  new Intent(getApplicationContext(),InsertPesaje.class);
-                startActivity(intent);
                 break;
+
 
         }
     }
+    private ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        }
+        @Override
+        public void onPageSelected(int position) {
+            switch (position){
+                case 0:
+                    fab_main_corrales.hide();
+                    fab_main_galpones.hide();
+                    fab.show();
+                    break;
+                case 1:
+                    fab.hide();
+                    fab_main_corrales.hide();
+                    fab_main_galpones.show();
+                    break;
+                case 2:
+                    fab.hide();
+                    fab_main_galpones.hide();
+                    fab_main_corrales.show();
+                    break;
+                case 3:
+                    fab.hide();
+                    fab_main_galpones.hide();
+                    fab_main_corrales.hide();
+                    break;
+            }
+        }
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
 }

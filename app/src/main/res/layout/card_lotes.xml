@@ -56,8 +56,9 @@
                 android:text="@string/date_text"
                 />
 
-            <!--<CheckBox
-                android:id="@+id/selected"
+
+            <ImageButton
+                android:id="@+id/view_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -65,8 +66,9 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:checked="false"/>-->
-
+                android:src="@drawable/ic_view"
+                android:background="@android:color/transparent"
+             />
         </RelativeLayout>
     </LinearLayout>
 

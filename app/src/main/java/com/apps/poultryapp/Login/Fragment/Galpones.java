@@ -25,6 +25,7 @@ import com.apps.poultryapp.R;
  * A simple {@link Fragment} subclass.
  */
 public class Galpones extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
     private AdapterWarehouse adapterWarehouse;
@@ -46,36 +47,31 @@ public class Galpones extends Fragment implements LoaderManager.LoaderCallbacks<
         layoutManager =  new LinearLayoutManager(getContext());
         adapterWarehouse = new AdapterWarehouse(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapterWarehouse);
         getLoaderManager().initLoader(0,null,this);
         SyncAdapter.inicializarSyncAdapter(getContext());
         String lote = SessionPref.get(getContext()).getLote();
-        Dataload();
-
          lot = "191";
-
+        System.out.println("------------------------------");
         return view;
     }
 
     @Override
     public void onResume() {
-        Dataload();
         super.onResume();
-        System.out.println("----------------------------------------------------------------------" );
     }
-
-    @Override
-    public void onPause() {
-        Dataload();
-        System.out.println("----------------------------------------------------------------------" );
-        super.onPause();
-    }
-
 
     public void Dataload(){
-        recyclerView.setAdapter(adapterWarehouse);
+        adapterWarehouse = new AdapterWarehouse(getContext());
+        recyclerView = new RecyclerView(getContext());
+        if (adapterWarehouse != null){
+            recyclerView.setAdapter(adapterWarehouse);
 
-        System.out.println("----------------------------------------------------------------------" );
+        }else {
+            System.out.println("es nullll");
+        }
+
     }
 
 
@@ -84,12 +80,7 @@ public class Galpones extends Fragment implements LoaderManager.LoaderCallbacks<
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
 
 
-        String lote = SessionPref.get(getContext()).getLote();
-        System.out.println("----------------------------------------------------------------------" +lote);
-        //String selection = "name" + "= GalponFinalPrueba" ;
-        String selection = ContratosData.Warehouse.BATCH + " =?";
-        String[] selectionArgs ={"191"};
-        CursorLoader cursorLoader = new  CursorLoader(getContext(), ContratosData.CONTENT_URI_WAREHOUSE,null,selection,selectionArgs,null);
+        CursorLoader cursorLoader = new  CursorLoader(getContext(), ContratosData.CONTENT_URI_WAREHOUSE,null,null,null,null);
 
         return cursorLoader;
     }

@@ -22,6 +22,7 @@
         android:inputType="numberDecimal"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/primary_dark"
         android:hint="Peso del Ave: 1"
         />
 </LinearLayout>

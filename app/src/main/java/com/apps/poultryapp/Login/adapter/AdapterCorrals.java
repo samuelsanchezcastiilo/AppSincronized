@@ -9,9 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apps.poultryapp.Login.DetallesItems;
 import com.apps.poultryapp.Login.InsertPesaje;
 import com.apps.poultryapp.Login.Provider.DataLocalHelper;
 import com.apps.poultryapp.R;
@@ -59,26 +61,39 @@ public class AdapterCorrals  extends RecyclerView.Adapter<AdapterCorrals.Expense
         String fecha;
         String corral;
         String age;
+        final String idRemota ;
 
         galpon = galponName;
         fecha = cursor.getString(5);
         age = cursor.getString(3);
         corral = cursor.getString(1);
+        idRemota = cursor.getString(7);
 
         holder.corral.setText(corral);
         holder.fecha.setText(fecha);
         holder.galpon.setText(galpon);
         holder.age.setText(age);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.addDAta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, InsertPesaje.class);
-                intent.putExtra("corral",cursor.getString(7));
+                intent.putExtra("corral",idRemota);
                 context.startActivity(intent);
-
             }
         });
+        holder.viewData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetallesItems.class);
+                intent.putExtra("origen","3");
+                intent.putExtra("idRemotaC",idRemota);
+                context.startActivity(intent);
+            }
+        });
+
+
+
+
 
     }
 
@@ -95,6 +110,8 @@ public class AdapterCorrals  extends RecyclerView.Adapter<AdapterCorrals.Expense
         private TextView galpon;
         private TextView fecha;
         private TextView corral;
+        private ImageButton viewData;
+        private ImageButton addDAta;
 
         public ExpenseViewHolder(View v) {
             super(v);
@@ -102,6 +119,8 @@ public class AdapterCorrals  extends RecyclerView.Adapter<AdapterCorrals.Expense
             fecha  = v.findViewById(R.id.date_text_galpon);
             corral  = v.findViewById(R.id.code_corral);
             age = v.findViewById(R.id.age_galpon);
+            viewData = v.findViewById(R.id.view_data);
+            addDAta = v.findViewById(R.id.add_pesaje);
         }
     }
 

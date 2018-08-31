@@ -1,6 +1,7 @@
 package com.apps.poultryapp.Login.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -8,8 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.apps.poultryapp.Login.DetallesItems;
 import com.apps.poultryapp.Login.Provider.DataLocalHelper;
 import com.apps.poultryapp.R;
 
@@ -23,12 +26,14 @@ public class AdapterWarehouse extends RecyclerView.Adapter<AdapterWarehouse.Expe
         public TextView lote;
         public TextView galpon;
         public TextView fecha;
+        public ImageButton viewData;
 
         public ExpenseViewHolder(View v) {
             super(v);
             lote = v.findViewById(R.id.text_data_code);
             galpon = v.findViewById(R.id.code_galpon);
             fecha = v.findViewById(R.id.date_text_galpon);
+            viewData = v.findViewById(R.id.view_data);
         }
     }
 
@@ -76,15 +81,26 @@ public class AdapterWarehouse extends RecyclerView.Adapter<AdapterWarehouse.Expe
         }
 
 
+        final String idRemota;
         String galpon;
         String fecha;
 
         galpon = cursor.getString(1);
         fecha = cursor.getString(5);
+        idRemota = cursor.getString(6);
 
         holder.lote.setText(lote);
         holder.fecha.setText(fecha);
         holder.galpon.setText(galpon);
+        holder.viewData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DetallesItems.class);
+                intent.putExtra("origen","2");
+                intent.putExtra("idRemota",idRemota);
+                context.startActivity(intent);
+            }
+        });
 
 
 
