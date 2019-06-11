@@ -83,7 +83,7 @@ public class AdapterPesajes extends RecyclerView.Adapter<AdapterPesajes.ExpenseV
 
         namepesaje =  cursor.getString(1);
         edad =  cursor.getString(3);
-        fecha = cursor.getString(6);
+        fecha = cursor.getString(7);
 
 
 

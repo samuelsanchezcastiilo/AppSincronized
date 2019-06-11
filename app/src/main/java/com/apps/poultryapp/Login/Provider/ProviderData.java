@@ -15,8 +15,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
-import static com.android.volley.VolleyLog.TAG;
-
 public class ProviderData  extends ContentProvider {
 
     public static final String URI_NO_SOPORTADA = "Uri no soportada";
@@ -224,7 +222,6 @@ public class ProviderData  extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
         SQLiteDatabase db = dataLocalHelper.getWritableDatabase();
-
         /*ContentValues contentValues;
         if (values != null) {
             contentValues = new ContentValues(values);
@@ -261,7 +258,6 @@ public class ProviderData  extends ContentProvider {
             case BATCHES:
                 db.insert(DataLocalHelper.Tablas.BATCHES, null, values);
                 notificarCambio(uri);
-                Log.d(TAG, "insert: insertando0 <> ++++++++++++++++++++++");
                 return ContratosData.Batches.craerUriBatches(values.getAsString(DataLocalHelper.Tablas.BATCHES));
             case WAREHOUSE:
                 db.insert(DataLocalHelper.Tablas.WAREHOUSE, null, values);

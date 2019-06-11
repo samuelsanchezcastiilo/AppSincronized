@@ -19,12 +19,10 @@ public class DataLocalHelper extends SQLiteOpenHelper {
         String WAREHOUSE = "warehouse";
         String WEIGHINGS = "weighings";
     }
-
     public DataLocalHelper(Context contexto) {
         super(contexto, NOMBRE_BASE_DATOS, null, VERSION_ACTUAL);
         this.contexto = contexto;
     }
-
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
@@ -82,6 +80,7 @@ public class DataLocalHelper extends SQLiteOpenHelper {
                 ContratosData.Weighings.AGE + " TEXT, " +
                 ContratosData.Weighings.COMPANY + " TEXT, " +
                 ContratosData.Weighings.CORRAL + " TEXT, " +
+                ContratosData.Weighings.STANDDAR_WEIGHT + " TEXT,"+
                 ContratosData.Weighings.CREATE+ " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 ContratosData.Weighings.UPDATE+ " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
                 ContratosData.Weighings.ID_REMOTA + " TEXT UNIQUE," +

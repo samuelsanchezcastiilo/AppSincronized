@@ -97,6 +97,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             ContratosData.Weighings.AGE,
             ContratosData.Weighings.COMPANY,
             ContratosData.Weighings.CORRAL,
+            ContratosData.Weighings.STANDDAR_WEIGHT,
             ContratosData.Weighings.CREATE,
             ContratosData.Weighings.UPDATE
     };
@@ -1029,6 +1030,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         String age;
         String company;
         String corral;
+        String standard_weight;
         String created;
         String update;
 
@@ -1040,8 +1042,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             age = c.getString(4);
             company = c.getString(5);
             corral = c.getString(6);
-            created = c.getString(7);
-            update = c.getString(8);
+            standard_weight = c.getString(7);
+            created = c.getString(8);
+            update = c.getString(9);
 
             Weighings match = expenseMap.get(id);
 
@@ -1058,10 +1061,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 boolean b3 = match.age != null && !match.age.equals(age);
                 boolean b4 = match.company != null && !match.company.equals(company);
                 boolean b5 = match.corral != null && !match.corral.equals(corral);
-                boolean b6 = match.created_at != null && !match.created_at.equals(created);
-                boolean b7 = match.updated_at != null && !match.updated_at.equals(update);
+                boolean b6 = match.standard_weight != null && !match.standard_weight.equals(standard_weight);
+                boolean b7 = match.created_at != null && !match.created_at.equals(created);
+                boolean b8 = match.updated_at != null && !match.updated_at.equals(update);
 
-                if (b1 || b2 || b3 || b4 || b5|| b6 || b7) {
+                if (b1 || b2 || b3 || b4 || b5|| b6 || b7 || b8) {
 
                     Log.i(TAG, "Programando actualización de lotes: " + existingUri);
 
@@ -1071,6 +1075,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                             .withValue(ContratosData.Weighings.AGE, match.age)
                             .withValue(ContratosData.Weighings.COMPANY, match.company)
                             .withValue(ContratosData.Weighings.CORRAL, match.corral)
+                            .withValue(ContratosData.Weighings.STANDDAR_WEIGHT, match.standard_weight)
                             .withValue(ContratosData.Weighings.CREATE, match.created_at)
                             .withValue(ContratosData.Weighings.UPDATE, match.updated_at)
                             .build());
@@ -1099,6 +1104,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     .withValue(ContratosData.Weighings.AGE, e.age)
                     .withValue(ContratosData.Weighings.COMPANY, e.company)
                     .withValue(ContratosData.Weighings.CORRAL, e.corral)
+                    .withValue(ContratosData.Weighings.STANDDAR_WEIGHT, e.standard_weight)
                     .withValue(ContratosData.Weighings.CREATE, e.created_at)
                     .withValue(ContratosData.Weighings.UPDATE, e.updated_at)
                     .build());

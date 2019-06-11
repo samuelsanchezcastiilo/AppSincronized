@@ -4,9 +4,13 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowId;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class InsertPesaje extends AppCompatActivity {
+public class InsertPesaje extends AppCompatActivity  {
 
     LinearLayout linearLayoutAddBrids;
     private ImageButton newBrid;
@@ -35,6 +39,8 @@ public class InsertPesaje extends AppCompatActivity {
     EditText[] pesajeAves;
     EditText pesajP;
     EditText age;
+    EditText standars;
+    EditText pesaje;
     List<String> pesajes;
     String bridsData = "1:";
     String corral ;
@@ -49,25 +55,42 @@ public class InsertPesaje extends AppCompatActivity {
         saveData = (Button) findViewById(R.id.save_data_pesajes);
         pesajP = (EditText) findViewById(R.id.value_pesaje);
         age = (EditText) findViewById(R.id.text_age_corral);
+        standars = (EditText) findViewById(R.id.peso_estandar);
         pesajes = new ArrayList<String>();
         pesajeAves  = new EditText[100];
-
         corral = getIntent().getStringExtra("corral");
-        Log.e(TAG, "onCreate:--------------------------- "+corral );
-
         newBrid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    newBrids();
-
-
+                newBrids();
             }
         });
+
+
+        pesajP.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    //aqui iria tu codigo al presionar el boton enter o done
+                    newBrids();
+                    pesaje.requestFocus();
+
+                }
+              return  false;
+            }
+        });
+
+
+
+
+
         saveData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pesajP.getText().toString().isEmpty()){
+                if (pesajP.getText().toString().isEmpty() || standars.getText().toString().isEmpty()){
                     pesajP.setError("Escriba el pesaje");
+                    standars.setError("Completar campos");
                     return;
                 }
                 if (age.getText().toString().isEmpty()){
@@ -76,14 +99,11 @@ public class InsertPesaje extends AppCompatActivity {
                 }
 
                 bridsData = bridsData+pesajP.getText().toString();
-
-
                 for (int i = 0; i < pesajeAves.length ; i++) {
                     if (i < sum){
                         bridsData = bridsData + " | " + String.valueOf(i+2) + ":" + pesajeAves[i].getText().toString();
                     }
                 }
-
                 String company =   SessionPref.get(getApplication()).getPrefUserCompany();
                 String edad = age.getText().toString();
                 ContentValues contentValues =  new ContentValues();
@@ -92,6 +112,7 @@ public class InsertPesaje extends AppCompatActivity {
                 contentValues.put(ContratosData.Weighings.AGE,edad);
                 contentValues.put(ContratosData.Weighings.COMPANY,company);
                 contentValues.put(ContratosData.Weighings.CORRAL,corral);
+                contentValues.put(ContratosData.Weighings.STANDDAR_WEIGHT,standars.getText().toString());
                 contentValues.put(ContratosData.Weighings.CREATE,getDateTime());
                 contentValues.put(ContratosData.Weighings.UPDATE,getDateTime());
                 contentValues.put(ContratosData.Weighings.PENDIENTE_INSERCION, 1);
@@ -106,6 +127,8 @@ public class InsertPesaje extends AppCompatActivity {
         });
 
     }
+
+
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -118,15 +141,26 @@ public class InsertPesaje extends AppCompatActivity {
         View view = layoutInflater.inflate(R.layout.new_brid,null,false);
 
         TextView contBrids = (TextView) view.findViewById(R.id.code_pesaje_ave);
-        EditText pesaje = (EditText) view.findViewById(R.id.value_pesaje);
+       pesaje = (EditText) view.findViewById(R.id.value_pesaje);
         contBrids.setText(String.valueOf(contadorBrids));
 
         pesaje.setId(contadorBrids);
         pesajeAves[sum] = pesaje;
         sum++;
-        Log.e(TAG, "newBrids id: "+pesaje.getId() );
-        Log.e(TAG, "valor del array: "+ sum);
         pesaje.setHint("Peso del Ave: " + String.valueOf(contadorBrids));
+        pesaje.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    //aqui iria tu codigo al presionar el boton enter o done
+                    newBrids();
+                    pesaje.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
         contadorBrids++;
         linearLayoutAddBrids.addView(view);

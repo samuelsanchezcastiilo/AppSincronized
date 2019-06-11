@@ -53,8 +53,10 @@ public class ContratosData {
         String AGE = "age";
         String COMPANY = "company";
         String CORRAL = "corral";
+        String STANDDAR_WEIGHT= "standard_weight";
         String CREATE = "created_at";
         String UPDATE = "updated_at";
+
 
         String ESTADO = "estado";
         String ID_REMOTA = "idRemota";

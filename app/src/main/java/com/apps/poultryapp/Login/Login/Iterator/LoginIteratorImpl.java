@@ -19,7 +19,13 @@ public class LoginIteratorImpl implements Iterator {
     }
 
     @Override
-    public void signIn(String username, String pasword) {
+    public void signIn(String username, String pasword)
+    {
       data.singIn(username,pasword);
+    }
+
+    @Override
+    public void signInTwoFactoryLogin(String username, String pasword, String code) {
+
     }
 }

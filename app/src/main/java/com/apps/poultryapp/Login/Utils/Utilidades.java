@@ -43,8 +43,9 @@ public class Utilidades {
     public static final int COLUMNA_AGE_WEIGHINGS = 4;
     public static final int COLUMNA_COMPANY_WEIGHINGS = 5;
     public static final int COLUMNA_CORRAL_WEIGHINGS = 6;
-    public static final int COLUMNA_CRATE_WEIGHINGS= 7;
-    public static final int COLUMNA_UPDATE_WEIGHINGS= 8;
+    public static final int COLUMNA_STANDAR_WEIGHINGS = 7;
+    public static final int COLUMNA_CRATE_WEIGHINGS= 8;
+    public static final int COLUMNA_UPDATE_WEIGHINGS= 9;
 
 
 
@@ -159,6 +160,7 @@ public class Utilidades {
         String age;
         String company;
         String corral;
+        String standard_weight;
         String create;
         String update;
 
@@ -167,8 +169,9 @@ public class Utilidades {
         age =  c.getString(COLUMNA_AGE_WEIGHINGS);
         company = c.getString(COLUMNA_COMPANY_WEIGHINGS);
         corral   = c.getString(COLUMNA_CORRAL_WEIGHINGS);
-        create = c.getString(COLUMNA_CRATE_CORRAL);
-        update = c.getString(COLUMNA_UPDATE_CORRAL);
+        standard_weight = c.getString(COLUMNA_STANDAR_WEIGHINGS);
+        create = c.getString(COLUMNA_CRATE_WEIGHINGS);
+        update = c.getString(COLUMNA_UPDATE_WEIGHINGS);
 
         try {
             jObject.put(ContratosData.Weighings.NAME, name);
@@ -176,6 +179,7 @@ public class Utilidades {
             jObject.put(ContratosData.Weighings.AGE, age);
             jObject.put(ContratosData.Weighings.COMPANY, company);
             jObject.put(ContratosData.Weighings.CORRAL, corral);
+            jObject.put(ContratosData.Weighings.STANDDAR_WEIGHT,standard_weight);
             jObject.put(ContratosData.Weighings.CREATE, create);
             jObject.put(ContratosData.Weighings.UPDATE, update);
         } catch (JSONException e) {

@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login.InsertPesaje">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/head_info"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/text_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Registre los pesajes de las "
@@ -19,9 +20,12 @@
             android:textSize="24sp"
             android:textColor="@color/primary_dark"
             android:layout_margin="20px"
-            android:gravity="center_horizontal" />
+            android:layout_centerHorizontal="true" />
 
         <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/text_description2"
+            android:layout_below="@+id/text_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Aves"
@@ -30,14 +34,26 @@
             android:textSize="18sp"/>
 
         <EditText
+            android:layout_below="@+id/text_description2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Edad"
-            android:layout_gravity="center_horizontal"
+            android:hint="Semana"
             android:id="@+id/text_age_corral"
             android:inputType="number"
-            android:padding="5dp"/>
-    </LinearLayout>
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="35dp"
+
+           />
+
+        <EditText
+            android:id="@+id/peso_estandar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_description2"
+            android:layout_toRightOf="@+id/text_age_corral"
+            android:inputType="number"
+            android:hint="Peso Estandar"/>
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
